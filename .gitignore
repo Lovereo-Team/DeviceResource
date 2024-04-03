@@ -19,3 +19,7 @@
 
 # Go workspace file
 go.work
+
+font/node_modules/
+back/.idea/
+.idea/
