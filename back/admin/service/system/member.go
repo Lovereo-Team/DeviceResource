@@ -5,8 +5,8 @@ import (
 	"DeviceResource/core/request"
 	"DeviceResource/core/response"
 	"DeviceResource/util"
-	"fmt"
 	"gorm.io/gorm"
+	"time"
 )
 
 type IMemberService interface {
@@ -41,14 +41,14 @@ func (srv memberService) List(page request.PageReq, listReq req.MemberListReq) (
 		model = model.Where("password = ?", listReq.Password)
 	}
 	if listReq.RealName != "" {
-		model = model.Where("RealName like ?", "%"+listReq.RealName+"%")
+		model = model.Where("real_name like ?", "%"+listReq.RealName+"%")
 	}
 	if listReq.Email != "" {
 		model = model.Where("email = ?", listReq.Email)
 	}
-	//if listReq.Status >= 0 {
-	//	model = model.Where("status = ?", listReq.Status)
-	//}
+	if listReq.Status != 0 {
+		model = model.Where("status = ?", listReq.Status)
+	}
 	//if listReq.LoginTime >= 0 {
 	//	model = model.Where("login_time = ?", listReq.LoginTime)
 	//}
@@ -87,6 +87,7 @@ func (srv memberService) Detail(id uint) (res req.MemberResp, e error) {
 	if e = response.CheckErr(err, "Detail First err"); e != nil {
 		return
 	}
+	obj.Password = ""
 	response.Copy(&res, obj)
 	return
 }
@@ -94,8 +95,10 @@ func (srv memberService) Detail(id uint) (res req.MemberResp, e error) {
 // Add 员工列新增
 func (srv memberService) Add(addReq req.MemberAddReq) (e error) {
 	var obj util.Member
+	addReq.Password = util.ToolsUtil.MakeMd5(addReq.Password)
+	addReq.Token = util.ToolsUtil.MakeToken()
+	addReq.CreateTime = int(time.Now().Unix())
 	response.Copy(&obj, addReq)
-	fmt.Println("a", &obj)
 	err := srv.db.Create(&obj).Error
 	e = response.CheckErr(err, "Add Create err")
 	return
@@ -113,6 +116,8 @@ func (srv memberService) Edit(editReq req.MemberEditReq) (e error) {
 		return
 	}
 	// 更新
+	editReq.Password = util.ToolsUtil.MakeMd5(editReq.Password)
+	editReq.UpdateTime = int(time.Now().Unix())
 	response.Copy(&obj, editReq)
 	err = srv.db.Model(&obj).Updates(obj).Error
 	e = response.CheckErr(err, "Edit Updates err")

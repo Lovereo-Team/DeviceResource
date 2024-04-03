@@ -60,7 +60,12 @@ func (hd memberHandler) detail(c *gin.Context) {
 func (hd memberHandler) add(c *gin.Context) {
 	var addReq req.MemberAddReq
 	fmt.Println("aaa", addReq)
+
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyBody(c, &addReq)) {
+		return
+	}
+	if !util.ToolsUtil.IsValidEmail(addReq.Email) {
+		response.FailWithMsg(c, response.Failed, "请输入正确的邮箱")
 		return
 	}
 	response.CheckAndResp(c, hd.srv.Add(addReq))

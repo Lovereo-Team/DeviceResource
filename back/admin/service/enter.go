@@ -28,4 +28,5 @@ var InitFunctions = []interface{}{
 	system.NewSystemLoginService,
 	system.NewSystemLogsServer,
 	system.NewMemberService,
+	system.NewResourceService,
 }

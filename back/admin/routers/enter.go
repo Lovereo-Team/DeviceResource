@@ -31,4 +31,5 @@ var InitRouters = []*core.GroupBase{
 	system.PostGroup,
 	system.RoleGroup,
 	system.MemberGroup,
+	system.ResourceGroup,
 }

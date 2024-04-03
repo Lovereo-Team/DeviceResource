@@ -22,25 +22,25 @@ type MemberDetailReq struct {
 
 // MemberAddReq 员工列新增参数
 type MemberAddReq struct {
-	Username  string `form:"username"`  // 用户名
-	Password  string `form:"password"`  // 密码
-	RealName  string `form:"realName"`  // 真实姓名
-	Email     string `form:"email"`     // 邮箱
-	Status    int    `form:"status"`    // 用户状态 1：正常 2：禁用
-	LoginTime int    `form:"loginTime"` // 登录时间
-	Token     string `form:"token"`     // 用户凭证
+	Username   string `form:"username"`   // 用户名
+	Password   string `form:"password"`   // 密码
+	RealName   string `form:"realName"`   // 真实姓名
+	Email      string `form:"email"`      // 邮箱
+	Status     int    `form:"status"`     // 用户状态 1：正常 2：禁用
+	CreateTime int    `form:"createTime"` // 创建时间
+	Token      string `form:"token"`      // 用户凭证
 }
 
 // MemberEditReq 员工列新增参数
 type MemberEditReq struct {
-	Id        int    `form:"id"`        //
-	Username  string `form:"username"`  // 用户名
-	Password  string `form:"password"`  // 密码
-	RealName  string `form:"realName"`  // 真实姓名
-	Email     string `form:"email"`     // 邮箱
-	Status    int    `form:"status"`    // 用户状态 1：正常 2：禁用
-	LoginTime int    `form:"loginTime"` // 登录时间
-	Token     string `form:"token"`     // 用户凭证
+	Id         int    `form:"id"`         //
+	Username   string `form:"username"`   // 用户名
+	Password   string `form:"password"`   // 密码
+	RealName   string `form:"realName"`   // 真实姓名
+	Email      string `form:"email"`      // 邮箱
+	Status     int    `form:"status"`     // 用户状态 1：正常 2：禁用
+	UpdateTime int    `form:"updateTime"` // 登录时间
+	Token      string `form:"token"`      // 用户凭证
 }
 
 // MemberDelReq 员工列新增参数

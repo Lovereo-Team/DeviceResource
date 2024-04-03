@@ -10,6 +10,7 @@ import (
 	"math/rand"
 	"os"
 	"reflect"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -96,4 +97,11 @@ func (tu toolsUtil) ObjToJson(data interface{}) (res string, err error) {
 func (tu toolsUtil) IsFileExist(path string) bool {
 	_, err := os.Stat(path)
 	return err == nil || os.IsExist(err)
+}
+
+func (tu toolsUtil) IsValidEmail(email string) bool {
+	// Regular expression pattern for email validation
+	emailRegex := `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`
+	match, _ := regexp.MatchString(emailRegex, email)
+	return match
 }
