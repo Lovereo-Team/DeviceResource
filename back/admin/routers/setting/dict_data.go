@@ -2,13 +2,13 @@ package setting
 
 import (
 	"DeviceResource/admin/schemas/req"
+	"DeviceResource/admin/service/setting"
+	"DeviceResource/core"
+	"DeviceResource/core/request"
+	"DeviceResource/core/response"
+	"DeviceResource/middleware"
+	"DeviceResource/util"
 	"github.com/gin-gonic/gin"
-	"likeadmin/admin/service/setting"
-	"likeadmin/core"
-	"likeadmin/core/request"
-	"likeadmin/core/response"
-	"likeadmin/middleware"
-	"likeadmin/util"
 )
 
 var DictDataGroup = core.Group("/setting", newDictDataHandler, regDictData, middleware.TokenAuth())

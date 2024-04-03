@@ -1,13 +1,13 @@
 package middleware
 
 import (
+	"DeviceResource/admin/service/system"
+	"DeviceResource/config"
+	"DeviceResource/core"
+	"DeviceResource/core/response"
+	sysModel "DeviceResource/model/system"
+	"DeviceResource/util"
 	"github.com/gin-gonic/gin"
-	"likeadmin/admin/service/system"
-	"likeadmin/config"
-	"likeadmin/core"
-	"likeadmin/core/response"
-	sysModel "likeadmin/model/system"
-	"likeadmin/util"
 	"strconv"
 	"strings"
 )
@@ -18,7 +18,7 @@ var (
 	adminSrv = system.NewSystemAuthAdminService(core.GetDB(), permSrv, roleSrv)
 )
 
-//TokenAuth Token认证中间件
+// TokenAuth Token认证中间件
 func TokenAuth() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// 路由转权限

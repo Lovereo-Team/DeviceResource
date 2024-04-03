@@ -2,10 +2,10 @@ package monitor
 
 import (
 	"DeviceResource/core"
+	"DeviceResource/core/response"
+	"DeviceResource/middleware"
+	"DeviceResource/util"
 	"github.com/gin-gonic/gin"
-	"likeadmin/core/response"
-	"likeadmin/middleware"
-	"likeadmin/util"
 	"strings"
 )
 

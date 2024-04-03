@@ -1,8 +1,8 @@
 package routers
 
 import (
-	"likeadmin/core"
-	"likeadmin/generator/routers/gen"
+	"DeviceResource/core"
+	"DeviceResource/generator/routers/gen"
 )
 
 var InitRouters = []*core.GroupBase{

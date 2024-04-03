@@ -2,12 +2,12 @@ package setting
 
 import (
 	"DeviceResource/admin/schemas/req"
+	"DeviceResource/admin/service/setting"
+	"DeviceResource/core"
+	"DeviceResource/core/response"
+	"DeviceResource/middleware"
+	"DeviceResource/util"
 	"github.com/gin-gonic/gin"
-	"likeadmin/admin/service/setting"
-	"likeadmin/core"
-	"likeadmin/core/response"
-	"likeadmin/middleware"
-	"likeadmin/util"
 )
 
 var WebsiteGroup = core.Group("/setting", newWebsiteHandler, regWebsite, middleware.TokenAuth())

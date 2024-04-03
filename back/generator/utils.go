@@ -1,10 +1,10 @@
 package generator
 
 import (
+	"DeviceResource/config"
+	"DeviceResource/model/gen"
+	"DeviceResource/util"
 	"gorm.io/gorm"
-	"likeadmin/config"
-	"likeadmin/model/gen"
-	"likeadmin/util"
 	"strconv"
 	"strings"
 	"time"

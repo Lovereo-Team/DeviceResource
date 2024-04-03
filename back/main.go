@@ -109,7 +109,7 @@ func main() {
 //	rows, err := db.Query(`
 //        SELECT table_name, TABLE_COMMENT, create_time, update_time
 //        FROM information_schema.tables
-//        WHERE table_schema = "likeadmin"
+//        WHERE table_schema = "DeviceResource"
 //        AND table_name NOT LIKE "qrtz_%"
 //        AND table_name NOT LIKE "gen_%"
 //        AND table_name NOT IN (SELECT TABLE_NAME FROM la_gen_table) LIMIT 10`)

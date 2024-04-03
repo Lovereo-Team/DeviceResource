@@ -11,7 +11,7 @@ import (
 
 var Config = loadConfig(".")
 
-//envConfig 环境配置
+// envConfig 环境配置
 type envConfig struct {
 	RootPath               string   // 项目根目录
 	GinMode                string   `mapstructure:"GIN_MODE"`        // gin运行模式
@@ -39,7 +39,7 @@ type envConfig struct {
 	UploadVideoExt         []string // 上传视频扩展
 }
 
-//loadConfig 加载配置
+// loadConfig 加载配置
 func loadConfig(envPath string) envConfig {
 	var cfgPath string
 	flag.StringVar(&cfgPath, "c", "", "config file envPath.")
@@ -65,12 +65,12 @@ func loadConfig(envPath string) envConfig {
 		// 资源访问前缀
 		PublicPrefix: "/api/uploads",
 		// 上传文件路径
-		UploadDirectory: "/tmp/uploads/likeadmin-go/",
+		UploadDirectory: "/tmp/uploads/DeviceResource-go/",
 		// Redis源配置
 		RedisUrl:      "redis://localhost:6379",
 		RedisPoolSize: 100,
 		// 数据源配置
-		DatabaseUrl:            "root:root@tcp(localhost:3306)/likeadmin?charset=utf8mb4&parseTime=True&loc=Local",
+		DatabaseUrl:            "root:root@tcp(localhost:3306)/DeviceResource?charset=utf8mb4&parseTime=True&loc=Local",
 		DbTablePrefix:          "la_",
 		DbDefaultStringSize:    256,
 		DbMaxIdleConns:         10,

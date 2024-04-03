@@ -1,15 +1,15 @@
 package system
 
 import (
+	"DeviceResource/admin/schemas/req"
+	"DeviceResource/admin/schemas/resp"
+	"DeviceResource/config"
+	"DeviceResource/core/request"
+	"DeviceResource/core/response"
+	"DeviceResource/model/system"
+	"DeviceResource/util"
 	"github.com/fatih/structs"
 	"gorm.io/gorm"
-	"likeadmin/admin/schemas/req"
-	"likeadmin/admin/schemas/resp"
-	"likeadmin/config"
-	"likeadmin/core/request"
-	"likeadmin/core/response"
-	"likeadmin/model/system"
-	"likeadmin/util"
 	"strconv"
 	"strings"
 )
@@ -23,18 +23,18 @@ type ISystemAuthRoleService interface {
 	Del(id uint) (e error)
 }
 
-//NewSystemAuthRoleService 初始化
+// NewSystemAuthRoleService 初始化
 func NewSystemAuthRoleService(db *gorm.DB, permSrv ISystemAuthPermService) ISystemAuthRoleService {
 	return &systemAuthRoleService{db: db, permSrv: permSrv}
 }
 
-//systemAuthRoleService 系统角色服务实现类
+// systemAuthRoleService 系统角色服务实现类
 type systemAuthRoleService struct {
 	db      *gorm.DB
 	permSrv ISystemAuthPermService
 }
 
-//All 角色所有
+// All 角色所有
 func (roleSrv systemAuthRoleService) All() (res []resp.SystemAuthRoleSimpleResp, e error) {
 	var roles []system.SystemAuthRole
 	err := roleSrv.db.Order("sort desc, id desc").Find(&roles).Error
@@ -45,7 +45,7 @@ func (roleSrv systemAuthRoleService) All() (res []resp.SystemAuthRoleSimpleResp,
 	return
 }
 
-//List 根据角色ID获取菜单ID
+// List 根据角色ID获取菜单ID
 func (roleSrv systemAuthRoleService) List(page request.PageReq) (res response.PageResp, e error) {
 	limit := page.PageSize
 	offset := page.PageSize * (page.PageNo - 1)
@@ -74,7 +74,7 @@ func (roleSrv systemAuthRoleService) List(page request.PageReq) (res response.Pa
 	}, nil
 }
 
-//Detail 角色详情
+// Detail 角色详情
 func (roleSrv systemAuthRoleService) Detail(id uint) (res resp.SystemAuthRoleResp, e error) {
 	var role system.SystemAuthRole
 	err := roleSrv.db.Where("id = ?", id).Limit(1).First(&role).Error
@@ -90,14 +90,14 @@ func (roleSrv systemAuthRoleService) Detail(id uint) (res resp.SystemAuthRoleRes
 	return
 }
 
-//getMemberCnt 根据角色ID获取成员数量
+// getMemberCnt 根据角色ID获取成员数量
 func (roleSrv systemAuthRoleService) getMemberCnt(roleId uint) (count int64) {
 	roleSrv.db.Model(&system.SystemAuthAdmin{}).Where(
 		"role = ? AND is_delete = ?", roleId, 0).Count(&count)
 	return
 }
 
-//Add 新增角色
+// Add 新增角色
 func (roleSrv systemAuthRoleService) Add(addReq req.SystemAuthRoleAddReq) (e error) {
 	var role system.SystemAuthRole
 	if r := roleSrv.db.Where("name = ?", strings.Trim(addReq.Name, " ")).Limit(1).First(&role); r.RowsAffected > 0 {
@@ -119,7 +119,7 @@ func (roleSrv systemAuthRoleService) Add(addReq req.SystemAuthRoleAddReq) (e err
 	return
 }
 
-//Edit 编辑角色
+// Edit 编辑角色
 func (roleSrv systemAuthRoleService) Edit(editReq req.SystemAuthRoleEditReq) (e error) {
 	err := roleSrv.db.Where("id = ?", editReq.ID).Limit(1).First(&system.SystemAuthRole{}).Error
 	if e = response.CheckErrDBNotRecord(err, "角色已不存在!"); e != nil {
@@ -157,7 +157,7 @@ func (roleSrv systemAuthRoleService) Edit(editReq req.SystemAuthRoleEditReq) (e 
 	return
 }
 
-//Del 删除角色
+// Del 删除角色
 func (roleSrv systemAuthRoleService) Del(id uint) (e error) {
 	err := roleSrv.db.Where("id = ?", id).Limit(1).First(&system.SystemAuthRole{}).Error
 	if e = response.CheckErrDBNotRecord(err, "角色已不存在!"); e != nil {

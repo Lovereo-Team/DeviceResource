@@ -6,9 +6,9 @@ import (
 	"DeviceResource/core"
 	"DeviceResource/core/request"
 	"DeviceResource/core/response"
+	"DeviceResource/middleware"
+	"DeviceResource/util"
 	"github.com/gin-gonic/gin"
-	"likeadmin/middleware"
-	"likeadmin/util"
 )
 
 var PostGroup = core.Group("/system", newPostHandler, regPost, middleware.TokenAuth())

@@ -7,9 +7,9 @@ import (
 	"DeviceResource/core/request"
 	"DeviceResource/core/response"
 	"DeviceResource/middleware"
+	"DeviceResource/util"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"likeadmin/util"
 )
 
 var MemberGroup = core.Group("/", newMemberHandler, regMember, middleware.TokenAuth())

@@ -1,20 +1,20 @@
 package gen
 
 import (
+	"DeviceResource/config"
+	"DeviceResource/core"
+	"DeviceResource/core/request"
+	"DeviceResource/core/response"
+	"DeviceResource/generator"
+	"DeviceResource/generator/schemas/req"
+	"DeviceResource/generator/schemas/resp"
+	"DeviceResource/model/gen"
+	"DeviceResource/util"
 	"archive/zip"
 	"bytes"
 	"database/sql"
 	"fmt"
 	"gorm.io/gorm"
-	"likeadmin/config"
-	"likeadmin/core"
-	"likeadmin/core/request"
-	"likeadmin/core/response"
-	"likeadmin/generator"
-	"likeadmin/generator/schemas/req"
-	"likeadmin/generator/schemas/resp"
-	"likeadmin/model/gen"
-	"likeadmin/util"
 	"strings"
 )
 

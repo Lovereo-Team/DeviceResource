@@ -2,13 +2,13 @@ package {{{ .PackageName }}}
 
 import (
 	"github.com/gin-gonic/gin"
-	"likeadmin/admin/schemas/req"
-	"likeadmin/admin/service/system"
-	"likeadmin/core"
-	"likeadmin/core/request"
-	"likeadmin/core/response"
-	"likeadmin/middleware"
-	"likeadmin/util"
+	"DeviceResource/admin/schemas/req"
+	"DeviceResource/admin/service/system"
+	"DeviceResource/core"
+	"DeviceResource/core/request"
+	"DeviceResource/core/response"
+	"DeviceResource/middleware"
+	"DeviceResource/util"
 )
 
 var {{{ title (toCamelCase .ModuleName) }}}Group = core.Group("/", new{{{ title (toCamelCase .ModuleName) }}}Handler, reg{{{ title (toCamelCase .ModuleName) }}}, middleware.TokenAuth())

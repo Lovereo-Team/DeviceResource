@@ -1,12 +1,12 @@
 package system
 
 import (
+	"DeviceResource/admin/schemas/req"
+	"DeviceResource/core/request"
+	"DeviceResource/core/response"
+	"DeviceResource/util"
 	"fmt"
 	"gorm.io/gorm"
-	"likeadmin/admin/schemas/req"
-	"likeadmin/core/request"
-	"likeadmin/core/response"
-	"likeadmin/util"
 )
 
 type IMemberService interface {

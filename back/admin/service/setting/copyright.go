@@ -1,10 +1,10 @@
 package setting
 
 import (
+	"DeviceResource/admin/schemas/req"
+	"DeviceResource/core/response"
+	"DeviceResource/util"
 	"gorm.io/gorm"
-	"likeadmin/admin/schemas/req"
-	"likeadmin/core/response"
-	"likeadmin/util"
 )
 
 type ISettingCopyrightService interface {
@@ -12,17 +12,17 @@ type ISettingCopyrightService interface {
 	Save(cReqs []req.SettingCopyrightItemReq) (e error)
 }
 
-//NewSettingCopyrightService 初始化
+// NewSettingCopyrightService 初始化
 func NewSettingCopyrightService(db *gorm.DB) ISettingCopyrightService {
 	return &settingCopyrightService{db: db}
 }
 
-//settingCopyrightService 网站备案服务实现类
+// settingCopyrightService 网站备案服务实现类
 type settingCopyrightService struct {
 	db *gorm.DB
 }
 
-//Detail 获取网站备案信息
+// Detail 获取网站备案信息
 func (cSrv settingCopyrightService) Detail() (res []map[string]interface{}, e error) {
 	data, err := util.ConfigUtil.GetVal(cSrv.db, "website", "copyright", "[]")
 	if e = response.CheckErr(err, "Detail GetVal err"); e != nil {
@@ -32,7 +32,7 @@ func (cSrv settingCopyrightService) Detail() (res []map[string]interface{}, e er
 	return
 }
 
-//Save 保存网站备案信息
+// Save 保存网站备案信息
 func (cSrv settingCopyrightService) Save(cReqs []req.SettingCopyrightItemReq) (e error) {
 	json, err := util.ToolsUtil.ObjToJson(cReqs)
 	if e = response.CheckErr(err, "Save ObjToJson err"); e != nil {

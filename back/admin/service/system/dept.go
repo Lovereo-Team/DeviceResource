@@ -1,12 +1,12 @@
 package system
 
 import (
+	"DeviceResource/admin/schemas/req"
+	"DeviceResource/admin/schemas/resp"
+	"DeviceResource/core/response"
+	"DeviceResource/model/system"
+	"DeviceResource/util"
 	"gorm.io/gorm"
-	"likeadmin/admin/schemas/req"
-	"likeadmin/admin/schemas/resp"
-	"likeadmin/core/response"
-	"likeadmin/model/system"
-	"likeadmin/util"
 )
 
 type ISystemAuthDeptService interface {
@@ -18,17 +18,17 @@ type ISystemAuthDeptService interface {
 	Del(id uint) (e error)
 }
 
-//NewSystemAuthDeptService 初始化
+// NewSystemAuthDeptService 初始化
 func NewSystemAuthDeptService(db *gorm.DB) ISystemAuthDeptService {
 	return &systemAuthDeptService{db: db}
 }
 
-//systemAuthDeptService 系统部门服务实现类
+// systemAuthDeptService 系统部门服务实现类
 type systemAuthDeptService struct {
 	db *gorm.DB
 }
 
-//All 部门所有
+// All 部门所有
 func (deptSrv systemAuthDeptService) All() (res []resp.SystemAuthDeptResp, e error) {
 	var depts []system.SystemAuthDept
 	err := deptSrv.db.Where("pid > ? AND is_delete = ?", 0, 0).Order("sort desc, id desc").Find(&depts).Error
@@ -40,7 +40,7 @@ func (deptSrv systemAuthDeptService) All() (res []resp.SystemAuthDeptResp, e err
 	return
 }
 
-//List 部门列表
+// List 部门列表
 func (deptSrv systemAuthDeptService) List(listReq req.SystemAuthDeptListReq) (mapList []interface{}, e error) {
 	deptModel := deptSrv.db.Where("is_delete = ?", 0)
 	if listReq.Name != "" {
@@ -61,7 +61,7 @@ func (deptSrv systemAuthDeptService) List(listReq req.SystemAuthDeptListReq) (ma
 	return
 }
 
-//Detail 部门详情
+// Detail 部门详情
 func (deptSrv systemAuthDeptService) Detail(id uint) (res resp.SystemAuthDeptResp, e error) {
 	var dept system.SystemAuthDept
 	err := deptSrv.db.Where("id = ? AND is_delete = ?", id, 0).Limit(1).First(&dept).Error
@@ -75,7 +75,7 @@ func (deptSrv systemAuthDeptService) Detail(id uint) (res resp.SystemAuthDeptRes
 	return
 }
 
-//Add 部门新增
+// Add 部门新增
 func (deptSrv systemAuthDeptService) Add(addReq req.SystemAuthDeptAddReq) (e error) {
 	if addReq.Pid == 0 {
 		r := deptSrv.db.Where("pid = ? AND is_delete = ?", 0, 0).Limit(1).Find(&system.SystemAuthDept{})
@@ -93,7 +93,7 @@ func (deptSrv systemAuthDeptService) Add(addReq req.SystemAuthDeptAddReq) (e err
 	return
 }
 
-//Edit 部门编辑
+// Edit 部门编辑
 func (deptSrv systemAuthDeptService) Edit(editReq req.SystemAuthDeptEditReq) (e error) {
 	var dept system.SystemAuthDept
 	err := deptSrv.db.Where("id = ? AND is_delete = ?", editReq.ID, 0).Limit(1).First(&dept).Error
@@ -117,7 +117,7 @@ func (deptSrv systemAuthDeptService) Edit(editReq req.SystemAuthDeptEditReq) (e 
 	return
 }
 
-//Del 部门删除
+// Del 部门删除
 func (deptSrv systemAuthDeptService) Del(id uint) (e error) {
 	var dept system.SystemAuthDept
 	err := deptSrv.db.Where("id = ? AND is_delete = ?", id, 0).Limit(1).First(&dept).Error

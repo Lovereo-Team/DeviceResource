@@ -1,12 +1,12 @@
 package setting
 
 import (
+	"DeviceResource/admin/schemas/req"
+	"DeviceResource/admin/schemas/resp"
+	"DeviceResource/core/request"
+	"DeviceResource/core/response"
+	"DeviceResource/model/setting"
 	"gorm.io/gorm"
-	"likeadmin/admin/schemas/req"
-	"likeadmin/admin/schemas/resp"
-	"likeadmin/core/request"
-	"likeadmin/core/response"
-	"likeadmin/model/setting"
 	"time"
 )
 
@@ -19,17 +19,17 @@ type ISettingDictTypeService interface {
 	Del(delReq req.SettingDictTypeDelReq) (e error)
 }
 
-//NewSettingDictTypeService 初始化
+// NewSettingDictTypeService 初始化
 func NewSettingDictTypeService(db *gorm.DB) ISettingDictTypeService {
 	return &settingDictTypeService{db: db}
 }
 
-//settingDictTypeService 字典类型服务实现类
+// settingDictTypeService 字典类型服务实现类
 type settingDictTypeService struct {
 	db *gorm.DB
 }
 
-//All 字典类型所有
+// All 字典类型所有
 func (dtSrv settingDictTypeService) All() (res []resp.SettingDictTypeResp, e error) {
 	var dictTypes []setting.DictType
 	err := dtSrv.db.Where("is_delete = ?", 0).Order("id desc").Find(&dictTypes).Error
@@ -41,7 +41,7 @@ func (dtSrv settingDictTypeService) All() (res []resp.SettingDictTypeResp, e err
 	return
 }
 
-//List 字典类型列表
+// List 字典类型列表
 func (dtSrv settingDictTypeService) List(page request.PageReq, listReq req.SettingDictTypeListReq) (res response.PageResp, e error) {
 	limit := page.PageSize
 	offset := page.PageSize * (page.PageNo - 1)
@@ -75,7 +75,7 @@ func (dtSrv settingDictTypeService) List(page request.PageReq, listReq req.Setti
 	}, nil
 }
 
-//Detail 字典类型详情
+// Detail 字典类型详情
 func (dtSrv settingDictTypeService) Detail(id uint) (res resp.SettingDictTypeResp, e error) {
 	var dt setting.DictType
 	err := dtSrv.db.Where("id = ? AND is_delete = ?", id, 0).Limit(1).First(&dt).Error
@@ -89,7 +89,7 @@ func (dtSrv settingDictTypeService) Detail(id uint) (res resp.SettingDictTypeRes
 	return
 }
 
-//Add 字典类型新增
+// Add 字典类型新增
 func (dtSrv settingDictTypeService) Add(addReq req.SettingDictTypeAddReq) (e error) {
 	if r := dtSrv.db.Where("dict_name = ? AND is_delete = ?", addReq.DictName, 0).Limit(1).First(&setting.DictType{}); r.RowsAffected > 0 {
 		return response.AssertArgumentError.Make("字典名称已存在！")
@@ -104,7 +104,7 @@ func (dtSrv settingDictTypeService) Add(addReq req.SettingDictTypeAddReq) (e err
 	return
 }
 
-//Edit 字典类型编辑
+// Edit 字典类型编辑
 func (dtSrv settingDictTypeService) Edit(editReq req.SettingDictTypeEditReq) (e error) {
 	err := dtSrv.db.Where("id = ? AND is_delete = ?", editReq.ID, 0).Limit(1).First(&setting.DictType{}).Error
 	if e = response.CheckErrDBNotRecord(err, "字典类型不存在！"); e != nil {
@@ -126,7 +126,7 @@ func (dtSrv settingDictTypeService) Edit(editReq req.SettingDictTypeEditReq) (e 
 	return
 }
 
-//Del 字典类型删除
+// Del 字典类型删除
 func (dtSrv settingDictTypeService) Del(delReq req.SettingDictTypeDelReq) (e error) {
 	err := dtSrv.db.Model(&setting.DictType{}).Where("id IN ?", delReq.Ids).Updates(
 		setting.DictType{IsDelete: 1, DeleteTime: time.Now().Unix()}).Error

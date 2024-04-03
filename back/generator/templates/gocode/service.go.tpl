@@ -2,9 +2,9 @@ package {{{ .PackageName }}}
 
 import (
 	"gorm.io/gorm"
-	"likeadmin/core/request"
-	"likeadmin/core/response"
-	"likeadmin/util"
+	"DeviceResource/core/request"
+	"DeviceResource/core/response"
+	"DeviceResource/util"
 )
 
 type I{{{ title (toCamelCase .EntityName) }}}Service interface {

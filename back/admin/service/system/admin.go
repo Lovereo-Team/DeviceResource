@@ -1,18 +1,18 @@
 package system
 
 import (
+	"DeviceResource/admin/schemas/req"
+	"DeviceResource/admin/schemas/resp"
+	"DeviceResource/config"
+	"DeviceResource/core"
+	"DeviceResource/core/request"
+	"DeviceResource/core/response"
+	"DeviceResource/model/system"
+	"DeviceResource/util"
 	"fmt"
 	"github.com/fatih/structs"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
-	"likeadmin/admin/schemas/req"
-	"likeadmin/admin/schemas/resp"
-	"likeadmin/config"
-	"likeadmin/core"
-	"likeadmin/core/request"
-	"likeadmin/core/response"
-	"likeadmin/model/system"
-	"likeadmin/util"
 	"strconv"
 	"strings"
 	"time"
@@ -31,25 +31,25 @@ type ISystemAuthAdminService interface {
 	CacheAdminUserByUid(id uint) (err error)
 }
 
-//NewSystemAuthAdminService 初始化
+// NewSystemAuthAdminService 初始化
 func NewSystemAuthAdminService(db *gorm.DB, permSrv ISystemAuthPermService, roleSrv ISystemAuthRoleService) ISystemAuthAdminService {
 	return &systemAuthAdminService{db: db, permSrv: permSrv, roleSrv: roleSrv}
 }
 
-//systemAuthAdminService 系统管理员服务实现类
+// systemAuthAdminService 系统管理员服务实现类
 type systemAuthAdminService struct {
 	db      *gorm.DB
 	permSrv ISystemAuthPermService
 	roleSrv ISystemAuthRoleService
 }
 
-//FindByUsername 根据账号查找管理员
+// FindByUsername 根据账号查找管理员
 func (adminSrv systemAuthAdminService) FindByUsername(username string) (admin system.SystemAuthAdmin, err error) {
 	err = adminSrv.db.Where("username = ?", username).Limit(1).First(&admin).Error
 	return
 }
 
-//Self 当前管理员
+// Self 当前管理员
 func (adminSrv systemAuthAdminService) Self(adminId uint) (res resp.SystemAuthAdminSelfResp, e error) {
 	// 管理员信息
 	var sysAdmin system.SystemAuthAdmin
@@ -92,7 +92,7 @@ func (adminSrv systemAuthAdminService) Self(adminId uint) (res resp.SystemAuthAd
 	return resp.SystemAuthAdminSelfResp{User: admin, Permissions: auths}, nil
 }
 
-//List 管理员列表
+// List 管理员列表
 func (adminSrv systemAuthAdminService) List(page request.PageReq, listReq req.SystemAuthAdminListReq) (res response.PageResp, e error) {
 	// 分页信息
 	limit := page.PageSize
@@ -141,7 +141,7 @@ func (adminSrv systemAuthAdminService) List(page request.PageReq, listReq req.Sy
 	}, nil
 }
 
-//Detail 管理员详细
+// Detail 管理员详细
 func (adminSrv systemAuthAdminService) Detail(id uint) (res resp.SystemAuthAdminResp, e error) {
 	var sysAdmin system.SystemAuthAdmin
 	err := adminSrv.db.Where("id = ? AND is_delete = ?", id, 0).Limit(1).First(&sysAdmin).Error
@@ -159,7 +159,7 @@ func (adminSrv systemAuthAdminService) Detail(id uint) (res resp.SystemAuthAdmin
 	return
 }
 
-//Add 管理员新增
+// Add 管理员新增
 func (adminSrv systemAuthAdminService) Add(addReq req.SystemAuthAdminAddReq) (e error) {
 	var sysAdmin system.SystemAuthAdmin
 	// 检查username
@@ -205,7 +205,7 @@ func (adminSrv systemAuthAdminService) Add(addReq req.SystemAuthAdminAddReq) (e 
 	return
 }
 
-//Edit 管理员编辑
+// Edit 管理员编辑
 func (adminSrv systemAuthAdminService) Edit(c *gin.Context, editReq req.SystemAuthAdminEditReq) (e error) {
 	// 检查id
 	err := adminSrv.db.Where("id = ? AND is_delete = ?", editReq.ID, 0).Limit(1).First(&system.SystemAuthAdmin{}).Error
@@ -288,7 +288,7 @@ func (adminSrv systemAuthAdminService) Edit(c *gin.Context, editReq req.SystemAu
 	return
 }
 
-//Update 管理员更新
+// Update 管理员更新
 func (adminSrv systemAuthAdminService) Update(c *gin.Context, updateReq req.SystemAuthAdminUpdateReq, adminId uint) (e error) {
 	// 检查id
 	var admin system.SystemAuthAdmin
@@ -347,7 +347,7 @@ func (adminSrv systemAuthAdminService) Update(c *gin.Context, updateReq req.Syst
 	return
 }
 
-//Del 管理员删除
+// Del 管理员删除
 func (adminSrv systemAuthAdminService) Del(c *gin.Context, id uint) (e error) {
 	var admin system.SystemAuthAdmin
 	err := adminSrv.db.Where("id = ? AND is_delete = ?", id, 0).Limit(1).First(&admin).Error
@@ -368,7 +368,7 @@ func (adminSrv systemAuthAdminService) Del(c *gin.Context, id uint) (e error) {
 	return
 }
 
-//Disable 管理员状态切换
+// Disable 管理员状态切换
 func (adminSrv systemAuthAdminService) Disable(c *gin.Context, id uint) (e error) {
 	var admin system.SystemAuthAdmin
 	err := adminSrv.db.Where("id = ? AND is_delete = ?", id, 0).Limit(1).Find(&admin).Error
@@ -390,7 +390,7 @@ func (adminSrv systemAuthAdminService) Disable(c *gin.Context, id uint) (e error
 	return
 }
 
-//CacheAdminUserByUid 缓存管理员
+// CacheAdminUserByUid 缓存管理员
 func (adminSrv systemAuthAdminService) CacheAdminUserByUid(id uint) (err error) {
 	var admin system.SystemAuthAdmin
 	err = adminSrv.db.Where("id = ?", id).Limit(1).First(&admin).Error

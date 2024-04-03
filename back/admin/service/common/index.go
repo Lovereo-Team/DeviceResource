@@ -1,11 +1,11 @@
 package common
 
 import (
+	"DeviceResource/config"
+	"DeviceResource/core"
+	"DeviceResource/core/response"
+	"DeviceResource/util"
 	"gorm.io/gorm"
-	"likeadmin/config"
-	"likeadmin/core"
-	"likeadmin/core/response"
-	"likeadmin/util"
 	"time"
 )
 
@@ -34,11 +34,11 @@ func (iSrv indexService) Console() (res map[string]interface{}, e error) {
 	version := map[string]interface{}{
 		"name":    name,
 		"version": config.Config.Version,
-		"website": "www.likeadmin.cn",
+		"website": "www.DeviceResource.cn",
 		"based":   "Vue3.x、ElementUI、MySQL",
 		"channel": map[string]string{
-			"gitee":   "https://gitee.com/likeadmin/likeadmin_python",
-			"website": "https://www.likeadmin.cn",
+			"gitee":   "https://gitee.com/DeviceResource/DeviceResource_python",
+			"website": "https://www.DeviceResource.cn",
 		},
 	}
 	// 今日数据

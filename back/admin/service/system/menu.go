@@ -1,15 +1,15 @@
 package system
 
 import (
+	"DeviceResource/admin/schemas/req"
+	"DeviceResource/admin/schemas/resp"
+	"DeviceResource/config"
+	"DeviceResource/core/response"
+	"DeviceResource/model/system"
+	"DeviceResource/util"
 	"github.com/fatih/structs"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
-	"likeadmin/admin/schemas/req"
-	"likeadmin/admin/schemas/resp"
-	"likeadmin/config"
-	"likeadmin/core/response"
-	"likeadmin/model/system"
-	"likeadmin/util"
 )
 
 type ISystemAuthMenuService interface {
@@ -21,18 +21,18 @@ type ISystemAuthMenuService interface {
 	Del(id uint) (e error)
 }
 
-//NewSystemAuthMenuService 初始化
+// NewSystemAuthMenuService 初始化
 func NewSystemAuthMenuService(db *gorm.DB, permSrv ISystemAuthPermService) ISystemAuthMenuService {
 	return &systemAuthMenuService{db: db, permSrv: permSrv}
 }
 
-//systemAuthMenuService 系统菜单服务实现类
+// systemAuthMenuService 系统菜单服务实现类
 type systemAuthMenuService struct {
 	db      *gorm.DB
 	permSrv ISystemAuthPermService
 }
 
-//SelectMenuByRoleId 根据角色ID获取菜单
+// SelectMenuByRoleId 根据角色ID获取菜单
 func (menuSrv systemAuthMenuService) SelectMenuByRoleId(c *gin.Context, roleId uint) (mapList []interface{}, e error) {
 	adminId := config.AdminConfig.GetAdminId(c)
 	var menuIds []uint
@@ -58,7 +58,7 @@ func (menuSrv systemAuthMenuService) SelectMenuByRoleId(c *gin.Context, roleId u
 	return
 }
 
-//List 菜单列表
+// List 菜单列表
 func (menuSrv systemAuthMenuService) List() (res []interface{}, e error) {
 	var menus []system.SystemAuthMenu
 	err := menuSrv.db.Order("menu_sort desc, id").Find(&menus).Error
@@ -71,7 +71,7 @@ func (menuSrv systemAuthMenuService) List() (res []interface{}, e error) {
 		util.ConvertUtil.StructsToMaps(menuResps), "id", "pid", "children"), nil
 }
 
-//Detail 菜单详情
+// Detail 菜单详情
 func (menuSrv systemAuthMenuService) Detail(id uint) (res resp.SystemAuthMenuResp, e error) {
 	var menu system.SystemAuthMenu
 	err := menuSrv.db.Where("id = ?", id).Limit(1).First(&menu).Error
@@ -114,7 +114,7 @@ func (menuSrv systemAuthMenuService) Edit(editReq req.SystemAuthMenuEditReq) (e 
 	return
 }
 
-//Del 删除菜单
+// Del 删除菜单
 func (menuSrv systemAuthMenuService) Del(id uint) (e error) {
 	var menu system.SystemAuthMenu
 	err := menuSrv.db.Where("id = ?", id).Limit(1).First(&menu).Error

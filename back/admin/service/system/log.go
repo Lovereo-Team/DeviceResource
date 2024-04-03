@@ -1,14 +1,14 @@
 package system
 
 import (
+	"DeviceResource/admin/schemas/req"
+	"DeviceResource/admin/schemas/resp"
+	"DeviceResource/core"
+	"DeviceResource/core/request"
+	"DeviceResource/core/response"
+	"DeviceResource/model/system"
 	"fmt"
 	"gorm.io/gorm"
-	"likeadmin/admin/schemas/req"
-	"likeadmin/admin/schemas/resp"
-	"likeadmin/core"
-	"likeadmin/core/request"
-	"likeadmin/core/response"
-	"likeadmin/model/system"
 )
 
 type ISystemLogsServer interface {
@@ -16,17 +16,17 @@ type ISystemLogsServer interface {
 	Login(page request.PageReq, logReq req.SystemLogLoginReq) (res response.PageResp, e error)
 }
 
-//NewSystemLogsServer 初始化
+// NewSystemLogsServer 初始化
 func NewSystemLogsServer(db *gorm.DB) ISystemLogsServer {
 	return &systemLogsServer{db: db}
 }
 
-//systemLogsServer 系统日志服务实现类
+// systemLogsServer 系统日志服务实现类
 type systemLogsServer struct {
 	db *gorm.DB
 }
 
-//Operate 系统操作日志
+// Operate 系统操作日志
 func (logSrv systemLogsServer) Operate(page request.PageReq, logReq req.SystemLogOperateReq) (res response.PageResp, e error) {
 	// 分页信息
 	limit := page.PageSize
@@ -82,7 +82,7 @@ func (logSrv systemLogsServer) Operate(page request.PageReq, logReq req.SystemLo
 	}, nil
 }
 
-//Login 系统登录日志
+// Login 系统登录日志
 func (logSrv systemLogsServer) Login(page request.PageReq, logReq req.SystemLogLoginReq) (res response.PageResp, e error) {
 	// 分页信息
 	limit := page.PageSize

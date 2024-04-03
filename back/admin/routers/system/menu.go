@@ -6,9 +6,9 @@ import (
 	"DeviceResource/config"
 	"DeviceResource/core"
 	"DeviceResource/core/response"
+	"DeviceResource/middleware"
+	"DeviceResource/util"
 	"github.com/gin-gonic/gin"
-	"likeadmin/middleware"
-	"likeadmin/util"
 )
 
 var MenuGroup = core.Group("/system", newMenuHandler, regMenu, middleware.TokenAuth())

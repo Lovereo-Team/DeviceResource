@@ -5,10 +5,10 @@ import (
 	"DeviceResource/admin/service/system"
 	"DeviceResource/core"
 	"DeviceResource/core/request"
+	"DeviceResource/core/response"
+	"DeviceResource/middleware"
+	"DeviceResource/util"
 	"github.com/gin-gonic/gin"
-	"likeadmin/core/response"
-	"likeadmin/middleware"
-	"likeadmin/util"
 )
 
 var RoleGroup = core.Group("/system", newRoleHandler, regRole, middleware.TokenAuth())

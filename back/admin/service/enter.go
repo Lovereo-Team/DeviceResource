@@ -1,9 +1,9 @@
 package service
 
 import (
-	"likeadmin/admin/service/common"
-	"likeadmin/admin/service/setting"
-	"likeadmin/admin/service/system"
+	"DeviceResource/admin/service/common"
+	"DeviceResource/admin/service/setting"
+	"DeviceResource/admin/service/system"
 )
 
 var InitFunctions = []interface{}{

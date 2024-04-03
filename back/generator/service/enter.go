@@ -1,6 +1,6 @@
 package service
 
-import "likeadmin/generator/service/gen"
+import "DeviceResource/generator/service/gen"
 
 var InitFunctions = []interface{}{
 	// gen

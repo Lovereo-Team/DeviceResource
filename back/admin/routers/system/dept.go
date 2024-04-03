@@ -2,12 +2,12 @@ package system
 
 import (
 	"DeviceResource/admin/schemas/req"
+	"DeviceResource/admin/service/system"
+	"DeviceResource/core"
+	"DeviceResource/core/response"
+	"DeviceResource/middleware"
+	"DeviceResource/util"
 	"github.com/gin-gonic/gin"
-	"likeadmin/admin/service/system"
-	"likeadmin/core"
-	"likeadmin/core/response"
-	"likeadmin/middleware"
-	"likeadmin/util"
 )
 
 var DeptGroup = core.Group("/system", newDeptHandler, regDept, middleware.TokenAuth())
