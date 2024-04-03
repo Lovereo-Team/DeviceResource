@@ -1,7 +1,7 @@
 package req
 
 import (
-	"likeadmin/core"
+	"DeviceResource/core"
 )
 
 // MemberListReq 员工列列表参数

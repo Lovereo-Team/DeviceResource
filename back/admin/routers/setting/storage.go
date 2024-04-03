@@ -1,8 +1,8 @@
 package setting
 
 import (
+	"DeviceResource/admin/schemas/req"
 	"github.com/gin-gonic/gin"
-	"likeadmin/admin/schemas/req"
 	"likeadmin/admin/service/setting"
 	"likeadmin/core"
 	"likeadmin/core/response"
@@ -29,13 +29,13 @@ type storageHandler struct {
 	srv setting.ISettingStorageService
 }
 
-//list 存储列表
+// list 存储列表
 func (sh storageHandler) list(c *gin.Context) {
 	res, err := sh.srv.List()
 	response.CheckAndRespWithData(c, res, err)
 }
 
-//detail 存储详情
+// detail 存储详情
 func (sh storageHandler) detail(c *gin.Context) {
 	var detailReq req.SettingStorageDetailReq
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyQuery(c, &detailReq)) {
@@ -45,7 +45,7 @@ func (sh storageHandler) detail(c *gin.Context) {
 	response.CheckAndRespWithData(c, res, err)
 }
 
-//edit 存储编辑
+// edit 存储编辑
 func (sh storageHandler) edit(c *gin.Context) {
 	var editReq req.SettingStorageEditReq
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyBody(c, &editReq)) {
@@ -54,7 +54,7 @@ func (sh storageHandler) edit(c *gin.Context) {
 	response.CheckAndResp(c, sh.srv.Edit(editReq))
 }
 
-//change 存储切换
+// change 存储切换
 func (sh storageHandler) change(c *gin.Context) {
 	var changeReq req.SettingStorageChangeReq
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyBody(c, &changeReq)) {

@@ -1,8 +1,8 @@
 package system
 
 import (
+	"DeviceResource/admin/schemas/req"
 	"github.com/gin-gonic/gin"
-	"likeadmin/admin/schemas/req"
 	"likeadmin/admin/service/system"
 	"likeadmin/core"
 	"likeadmin/core/response"
@@ -31,13 +31,13 @@ type deptHandler struct {
 	srv system.ISystemAuthDeptService
 }
 
-//all 部门所有
+// all 部门所有
 func (dh deptHandler) all(c *gin.Context) {
 	res, err := dh.srv.All()
 	response.CheckAndRespWithData(c, res, err)
 }
 
-//list 部门列表
+// list 部门列表
 func (dh deptHandler) list(c *gin.Context) {
 	var listReq req.SystemAuthDeptListReq
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyQuery(c, &listReq)) {
@@ -47,7 +47,7 @@ func (dh deptHandler) list(c *gin.Context) {
 	response.CheckAndRespWithData(c, res, err)
 }
 
-//detail 部门详情
+// detail 部门详情
 func (dh deptHandler) detail(c *gin.Context) {
 	var detailReq req.SystemAuthDeptDetailReq
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyQuery(c, &detailReq)) {
@@ -57,7 +57,7 @@ func (dh deptHandler) detail(c *gin.Context) {
 	response.CheckAndRespWithData(c, res, err)
 }
 
-//add 部门新增
+// add 部门新增
 func (dh deptHandler) add(c *gin.Context) {
 	var addReq req.SystemAuthDeptAddReq
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyBody(c, &addReq)) {
@@ -66,7 +66,7 @@ func (dh deptHandler) add(c *gin.Context) {
 	response.CheckAndResp(c, dh.srv.Add(addReq))
 }
 
-//edit 部门编辑
+// edit 部门编辑
 func (dh deptHandler) edit(c *gin.Context) {
 	var editReq req.SystemAuthDeptEditReq
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyBody(c, &editReq)) {
@@ -75,7 +75,7 @@ func (dh deptHandler) edit(c *gin.Context) {
 	response.CheckAndResp(c, dh.srv.Edit(editReq))
 }
 
-//del 部门删除
+// del 部门删除
 func (dh deptHandler) del(c *gin.Context) {
 	var delReq req.SystemAuthDeptDelReq
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyBody(c, &delReq)) {

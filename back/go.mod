@@ -1,4 +1,4 @@
-module likeadmin
+module DeviceResource
 
 go 1.18
 

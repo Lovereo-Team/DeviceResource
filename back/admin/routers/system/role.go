@@ -1,11 +1,11 @@
 package system
 
 import (
+	"DeviceResource/admin/schemas/req"
+	"DeviceResource/admin/service/system"
+	"DeviceResource/core"
+	"DeviceResource/core/request"
 	"github.com/gin-gonic/gin"
-	"likeadmin/admin/schemas/req"
-	"likeadmin/admin/service/system"
-	"likeadmin/core"
-	"likeadmin/core/request"
 	"likeadmin/core/response"
 	"likeadmin/middleware"
 	"likeadmin/util"
@@ -32,13 +32,13 @@ type roleHandler struct {
 	srv system.ISystemAuthRoleService
 }
 
-//all 角色所有
+// all 角色所有
 func (rh roleHandler) all(c *gin.Context) {
 	res, err := rh.srv.All()
 	response.CheckAndRespWithData(c, res, err)
 }
 
-//list 角色列表
+// list 角色列表
 func (rh roleHandler) list(c *gin.Context) {
 	var page request.PageReq
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyQuery(c, &page)) {
@@ -48,7 +48,7 @@ func (rh roleHandler) list(c *gin.Context) {
 	response.CheckAndRespWithData(c, res, err)
 }
 
-//detail 角色详情
+// detail 角色详情
 func (rh roleHandler) detail(c *gin.Context) {
 	var detailReq req.SystemAuthRoleDetailReq
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyQuery(c, &detailReq)) {
@@ -58,7 +58,7 @@ func (rh roleHandler) detail(c *gin.Context) {
 	response.CheckAndRespWithData(c, res, err)
 }
 
-//add 新增角色
+// add 新增角色
 func (rh roleHandler) add(c *gin.Context) {
 	var addReq req.SystemAuthRoleAddReq
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyJSON(c, &addReq)) {
@@ -67,7 +67,7 @@ func (rh roleHandler) add(c *gin.Context) {
 	response.CheckAndResp(c, rh.srv.Add(addReq))
 }
 
-//edit 编辑角色
+// edit 编辑角色
 func (rh roleHandler) edit(c *gin.Context) {
 	var editReq req.SystemAuthRoleEditReq
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyJSON(c, &editReq)) {
@@ -76,7 +76,7 @@ func (rh roleHandler) edit(c *gin.Context) {
 	response.CheckAndResp(c, rh.srv.Edit(editReq))
 }
 
-//del 删除角色
+// del 删除角色
 func (rh roleHandler) del(c *gin.Context) {
 	var delReq req.SystemAuthRoleDelReq
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyJSON(c, &delReq)) {

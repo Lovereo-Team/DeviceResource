@@ -1,8 +1,8 @@
 package setting
 
 import (
+	"DeviceResource/admin/schemas/req"
 	"github.com/gin-gonic/gin"
-	"likeadmin/admin/schemas/req"
 	"likeadmin/admin/service/setting"
 	"likeadmin/core"
 	"likeadmin/core/response"
@@ -27,13 +27,13 @@ type copyrightHandler struct {
 	srv setting.ISettingCopyrightService
 }
 
-//detail 获取备案信息
+// detail 获取备案信息
 func (ch copyrightHandler) detail(c *gin.Context) {
 	res, err := ch.srv.Detail()
 	response.CheckAndRespWithData(c, res, err)
 }
 
-//save 保存备案信息
+// save 保存备案信息
 func (ch copyrightHandler) save(c *gin.Context) {
 	var cReqs []req.SettingCopyrightItemReq
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyJSONArray(c, &cReqs)) {

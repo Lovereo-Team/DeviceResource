@@ -1,12 +1,12 @@
 package system
 
 import (
+	"DeviceResource/admin/schemas/req"
+	"DeviceResource/admin/service/system"
+	"DeviceResource/config"
+	"DeviceResource/core"
+	"DeviceResource/core/response"
 	"github.com/gin-gonic/gin"
-	"likeadmin/admin/schemas/req"
-	"likeadmin/admin/service/system"
-	"likeadmin/config"
-	"likeadmin/core"
-	"likeadmin/core/response"
 	"likeadmin/middleware"
 	"likeadmin/util"
 )
@@ -32,20 +32,20 @@ type menuHandler struct {
 	srv system.ISystemAuthMenuService
 }
 
-//route 菜单路由
+// route 菜单路由
 func (mh menuHandler) route(c *gin.Context) {
 	adminId := config.AdminConfig.GetAdminId(c)
 	res, err := mh.srv.SelectMenuByRoleId(c, adminId)
 	response.CheckAndRespWithData(c, res, err)
 }
 
-//list 菜单列表
+// list 菜单列表
 func (mh menuHandler) list(c *gin.Context) {
 	res, err := mh.srv.List()
 	response.CheckAndRespWithData(c, res, err)
 }
 
-//detail 菜单详情
+// detail 菜单详情
 func (mh menuHandler) detail(c *gin.Context) {
 	var detailReq req.SystemAuthMenuDetailReq
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyQuery(c, &detailReq)) {
@@ -55,7 +55,7 @@ func (mh menuHandler) detail(c *gin.Context) {
 	response.CheckAndRespWithData(c, res, err)
 }
 
-//add 新增菜单
+// add 新增菜单
 func (mh menuHandler) add(c *gin.Context) {
 	var addReq req.SystemAuthMenuAddReq
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyJSON(c, &addReq)) {
@@ -64,7 +64,7 @@ func (mh menuHandler) add(c *gin.Context) {
 	response.CheckAndResp(c, mh.srv.Add(addReq))
 }
 
-//edit 编辑菜单
+// edit 编辑菜单
 func (mh menuHandler) edit(c *gin.Context) {
 	var editReq req.SystemAuthMenuEditReq
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyJSON(c, &editReq)) {
@@ -73,7 +73,7 @@ func (mh menuHandler) edit(c *gin.Context) {
 	response.CheckAndResp(c, mh.srv.Edit(editReq))
 }
 
-//del 删除菜单
+// del 删除菜单
 func (mh menuHandler) del(c *gin.Context) {
 	var delReq req.SystemAuthMenuDelReq
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyJSON(c, &delReq)) {

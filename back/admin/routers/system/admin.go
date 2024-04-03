@@ -1,15 +1,15 @@
 package system
 
 import (
+	"DeviceResource/admin/schemas/req"
+	"DeviceResource/admin/service/system"
+	"DeviceResource/config"
+	"DeviceResource/core"
+	"DeviceResource/core/request"
+	"DeviceResource/core/response"
+	"DeviceResource/middleware"
+	"DeviceResource/util"
 	"github.com/gin-gonic/gin"
-	"likeadmin/admin/schemas/req"
-	"likeadmin/admin/service/system"
-	"likeadmin/config"
-	"likeadmin/core"
-	"likeadmin/core/request"
-	"likeadmin/core/response"
-	"likeadmin/middleware"
-	"likeadmin/util"
 )
 
 var AdminGroup = core.Group("/system", newAdminHandler, regAdmin, middleware.TokenAuth())
@@ -35,14 +35,14 @@ type adminHandler struct {
 	srv system.ISystemAuthAdminService
 }
 
-//self 管理员信息
+// self 管理员信息
 func (ah adminHandler) self(c *gin.Context) {
 	adminId := config.AdminConfig.GetAdminId(c)
 	res, err := ah.srv.Self(adminId)
 	response.CheckAndRespWithData(c, res, err)
 }
 
-//list 管理员列表
+// list 管理员列表
 func (ah adminHandler) list(c *gin.Context) {
 	var page request.PageReq
 	var listReq req.SystemAuthAdminListReq
@@ -56,7 +56,7 @@ func (ah adminHandler) list(c *gin.Context) {
 	response.CheckAndRespWithData(c, res, err)
 }
 
-//detail 管理员详细
+// detail 管理员详细
 func (ah adminHandler) detail(c *gin.Context) {
 	var detailReq req.SystemAuthAdminDetailReq
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyQuery(c, &detailReq)) {
@@ -66,7 +66,7 @@ func (ah adminHandler) detail(c *gin.Context) {
 	response.CheckAndRespWithData(c, res, err)
 }
 
-//add 管理员新增
+// add 管理员新增
 func (ah adminHandler) add(c *gin.Context) {
 	var addReq req.SystemAuthAdminAddReq
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyJSON(c, &addReq)) {
@@ -75,7 +75,7 @@ func (ah adminHandler) add(c *gin.Context) {
 	response.CheckAndResp(c, ah.srv.Add(addReq))
 }
 
-//edit 管理员编辑
+// edit 管理员编辑
 func (ah adminHandler) edit(c *gin.Context) {
 	var editReq req.SystemAuthAdminEditReq
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyJSON(c, &editReq)) {
@@ -84,7 +84,7 @@ func (ah adminHandler) edit(c *gin.Context) {
 	response.CheckAndResp(c, ah.srv.Edit(c, editReq))
 }
 
-//upInfo 管理员更新
+// upInfo 管理员更新
 func (ah adminHandler) upInfo(c *gin.Context) {
 	var updateReq req.SystemAuthAdminUpdateReq
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyJSON(c, &updateReq)) {
@@ -94,7 +94,7 @@ func (ah adminHandler) upInfo(c *gin.Context) {
 		c, updateReq, config.AdminConfig.GetAdminId(c)))
 }
 
-//del 管理员删除
+// del 管理员删除
 func (ah adminHandler) del(c *gin.Context) {
 	var delReq req.SystemAuthAdminDelReq
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyJSON(c, &delReq)) {
@@ -103,7 +103,7 @@ func (ah adminHandler) del(c *gin.Context) {
 	response.CheckAndResp(c, ah.srv.Del(c, delReq.ID))
 }
 
-//disable 管理员状态切换
+// disable 管理员状态切换
 func (ah adminHandler) disable(c *gin.Context) {
 	var disableReq req.SystemAuthAdminDisableReq
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyJSON(c, &disableReq)) {

@@ -1,12 +1,12 @@
 package system
 
 import (
+	"DeviceResource/admin/schemas/req"
+	"DeviceResource/admin/service/system"
+	"DeviceResource/core"
+	"DeviceResource/core/request"
+	"DeviceResource/core/response"
 	"github.com/gin-gonic/gin"
-	"likeadmin/admin/schemas/req"
-	"likeadmin/admin/service/system"
-	"likeadmin/core"
-	"likeadmin/core/request"
-	"likeadmin/core/response"
 	"likeadmin/middleware"
 	"likeadmin/util"
 )
@@ -32,13 +32,13 @@ type postHandler struct {
 	srv system.ISystemAuthPostService
 }
 
-//all 岗位所有
+// all 岗位所有
 func (ph postHandler) all(c *gin.Context) {
 	res, err := ph.srv.All()
 	response.CheckAndRespWithData(c, res, err)
 }
 
-//list 岗位列表
+// list 岗位列表
 func (ph postHandler) list(c *gin.Context) {
 	var page request.PageReq
 	var listReq req.SystemAuthPostListReq
@@ -52,7 +52,7 @@ func (ph postHandler) list(c *gin.Context) {
 	response.CheckAndRespWithData(c, res, err)
 }
 
-//detail 岗位详情
+// detail 岗位详情
 func (ph postHandler) detail(c *gin.Context) {
 	var detailReq req.SystemAuthPostDetailReq
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyQuery(c, &detailReq)) {
@@ -62,7 +62,7 @@ func (ph postHandler) detail(c *gin.Context) {
 	response.CheckAndRespWithData(c, res, err)
 }
 
-//add 岗位新增
+// add 岗位新增
 func (ph postHandler) add(c *gin.Context) {
 	var addReq req.SystemAuthPostAddReq
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyBody(c, &addReq)) {
@@ -71,7 +71,7 @@ func (ph postHandler) add(c *gin.Context) {
 	response.CheckAndResp(c, ph.srv.Add(addReq))
 }
 
-//edit 岗位编辑
+// edit 岗位编辑
 func (ph postHandler) edit(c *gin.Context) {
 	var editReq req.SystemAuthPostEditReq
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyBody(c, &editReq)) {
@@ -80,7 +80,7 @@ func (ph postHandler) edit(c *gin.Context) {
 	response.CheckAndResp(c, ph.srv.Edit(editReq))
 }
 
-//del 岗位删除
+// del 岗位删除
 func (ph postHandler) del(c *gin.Context) {
 	var delReq req.SystemAuthPostDelReq
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyBody(c, &delReq)) {

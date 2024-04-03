@@ -1,17 +1,17 @@
 package util
 
 import (
+	"DeviceResource/core"
 	"github.com/fatih/structs"
 	"github.com/jinzhu/copier"
-	"likeadmin/core"
 )
 
 var ConvertUtil = convertUtil{}
 
-//convertUtil 转换工具
+// convertUtil 转换工具
 type convertUtil struct{}
 
-//StructsToMaps 将结构体转换成Map列表
+// StructsToMaps 将结构体转换成Map列表
 func (cu convertUtil) StructsToMaps(objs interface{}) (data []map[string]interface{}) {
 	var objList []interface{}
 	err := copier.Copy(&objList, objs)

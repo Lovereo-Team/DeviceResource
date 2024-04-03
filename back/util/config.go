@@ -1,17 +1,17 @@
 package util
 
 import (
+	"DeviceResource/model/system"
 	"errors"
 	"gorm.io/gorm"
-	"likeadmin/model/system"
 )
 
 var ConfigUtil = configUtil{}
 
-//convertUtil 数据库配置操作工具
+// convertUtil 数据库配置操作工具
 type configUtil struct{}
 
-//Get 根据类型和名称获取配置字典
+// Get 根据类型和名称获取配置字典
 func (cu configUtil) Get(db *gorm.DB, cnfType string, names ...string) (data map[string]string, err error) {
 	chain := db.Where("type = ?", cnfType)
 	if len(names) > 0 {
@@ -29,7 +29,7 @@ func (cu configUtil) Get(db *gorm.DB, cnfType string, names ...string) (data map
 	return data, nil
 }
 
-//GetVal 根据类型和名称获取配置值
+// GetVal 根据类型和名称获取配置值
 func (cu configUtil) GetVal(db *gorm.DB, cnfType string, name string, defaultVal string) (data string, err error) {
 	config, err := cu.Get(db, cnfType, name)
 	if err != nil {
@@ -42,7 +42,7 @@ func (cu configUtil) GetVal(db *gorm.DB, cnfType string, name string, defaultVal
 	return data, nil
 }
 
-//GetMap 根据类型和名称获取配置值(Json字符串转dict)
+// GetMap 根据类型和名称获取配置值(Json字符串转dict)
 func (cu configUtil) GetMap(db *gorm.DB, cnfType string, name string) (data map[string]string, err error) {
 	val, err := cu.GetVal(db, cnfType, name, "")
 	if err != nil {
@@ -55,7 +55,7 @@ func (cu configUtil) GetMap(db *gorm.DB, cnfType string, name string) (data map[
 	return data, err
 }
 
-//Set 设置配置的值
+// Set 设置配置的值
 func (cu configUtil) Set(db *gorm.DB, cnfType string, name string, val string) (err error) {
 	var config system.SystemConfig
 	err = db.Where("type = ? AND name = ?", cnfType, name).First(&config).Error

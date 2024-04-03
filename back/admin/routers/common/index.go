@@ -1,11 +1,11 @@
 package common
 
 import (
+	"DeviceResource/admin/service/common"
+	"DeviceResource/core"
+	"DeviceResource/core/response"
+	"DeviceResource/middleware"
 	"github.com/gin-gonic/gin"
-	"likeadmin/admin/service/common"
-	"likeadmin/core"
-	"likeadmin/core/response"
-	"likeadmin/middleware"
 )
 
 var IndexGroup = core.Group("/common", newIndexHandler, regIndex, middleware.TokenAuth())
@@ -25,13 +25,13 @@ type indexHandler struct {
 	srv common.IIndexService
 }
 
-//console 控制台
+// console 控制台
 func (ih indexHandler) console(c *gin.Context) {
 	res, err := ih.srv.Console()
 	response.CheckAndRespWithData(c, res, err)
 }
 
-//config 公共配置
+// config 公共配置
 func (ih indexHandler) config(c *gin.Context) {
 	res, err := ih.srv.Config()
 	response.CheckAndRespWithData(c, res, err)

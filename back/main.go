@@ -1,15 +1,15 @@
 package main
 
 import (
+	adminRouters "DeviceResource/admin/routers"
+	admin "DeviceResource/admin/service"
+	"DeviceResource/config"
+	"DeviceResource/core"
+	"DeviceResource/core/response"
+	genRouters "DeviceResource/generator/routers"
+	gen "DeviceResource/generator/service"
+	"DeviceResource/middleware"
 	"github.com/gin-gonic/gin"
-	adminRouters "likeadmin/admin/routers"
-	admin "likeadmin/admin/service"
-	"likeadmin/config"
-	"likeadmin/core"
-	"likeadmin/core/response"
-	genRouters "likeadmin/generator/routers"
-	gen "likeadmin/generator/service"
-	"likeadmin/middleware"
 	"log"
 	"net/http"
 	"strconv"
@@ -99,7 +99,7 @@ func main() {
 //
 //func main() {
 //	// MySQL数据库连接信息
-//	db, err := sql.Open("mysql", "root:120812614@tcp(localhost:3306)/likeadmin?charset=utf8mb4&parseTime=True&loc=Local")
+//	db, err := sql.Open("mysql", "root:120812614@tcp(localhost:3306)/DeviceResource?charset=utf8mb4&parseTime=True&loc=Local")
 //	if err != nil {
 //		panic(err.Error())
 //	}

@@ -1,11 +1,11 @@
 package core
 
 import (
+	"DeviceResource/config"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
-	"likeadmin/config"
 	"log"
 	"os"
 	"time"
@@ -17,7 +17,7 @@ func GetDB() *gorm.DB {
 	return db
 }
 
-//initMysql 初始化mysql会话
+// initMysql 初始化mysql会话
 func initMysql() *gorm.DB {
 	// 日志配置
 	slowThreshold := time.Second
