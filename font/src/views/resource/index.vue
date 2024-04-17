@@ -59,7 +59,7 @@
                             v-perms="['resource:video']"
                             type="primary"
                             link
-                            @click="handleVideo()"
+                            @click="handleVideo(scope.row.VideoTop)"
                         >
                             视频
                         </el-button>
@@ -81,6 +81,14 @@
                                 </div>
                             </template>
                         </el-image>
+                        <el-button
+                            v-perms="['resource:video']"
+                            type="primary"
+                            link
+                            @click="handleVideo(scope.row.VideoFront)"
+                        >
+                            视频
+                        </el-button>
                     </template>
                 </el-table-column>
                 <el-table-column label="图片_后" prop="imgBehind" min-width="100" >
@@ -139,7 +147,7 @@
                     </template>
                 </el-table-column>
 <!--                <el-table-column label="图片集合" prop="imgS" min-width="100" />-->
-                <el-table-column label="视频" prop="video" min-width="100" />
+<!--                <el-table-column label="视频" prop="video" min-width="100" />-->
                 <el-table-column label="创建时间" prop="createTime" min-width="150" />
                 <el-table-column label="操作" width="120" fixed="right">
                     <template #default="{ row }">
@@ -225,11 +233,12 @@ const handleEdit = async (data: any) => {
     editRef.value?.getDetail(data)
 }
 
-const handleVideo = async () => {
+const handleVideo = async (device) => {
+    console.log(device)
     showVideo.value = true
     await nextTick()
 
-    videoRef.value?.open('video')
+    videoRef.value?.open(device)
     // videoRef.value?.getDetail(data)
 }
 

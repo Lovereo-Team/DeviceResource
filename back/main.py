@@ -23,7 +23,7 @@ async def generate_frames(cap, camera_index, code):
     # 创建文件夹以保存视频和图片
     folder_name = f"www/wwwroot/likeadmin_go/public/uploads/image/camera_{camera_index}"
     os.makedirs(folder_name, exist_ok=True)
-    video_writer = cv2.VideoWriter(f"{folder_name}/{code}.avi", cv2.VideoWriter_fourcc(*'XVID'), cap.get(cv2.CAP_PROP_FPS), (int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))))
+    video_writer = cv2.VideoWriter(f"{folder_name}/{code}.mp4", cv2.VideoWriter_fourcc(*'H264'), cap.get(cv2.CAP_PROP_FPS), (int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))))
 
     image_paths = []  # 用于存储图片路径的列表
     T1 = time.time()

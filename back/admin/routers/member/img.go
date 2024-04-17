@@ -19,6 +19,7 @@ func newImgHandler(srv member.IImgService) *imgHandler {
 func regImg(rg *gin.RouterGroup, group *core.GroupBase) error {
 	return group.Reg(func(handle *imgHandler) {
 		rg.GET("/img", handle.list)
+		rg.GET("/getVideo", handle.getVideo)
 	})
 }
 
@@ -32,5 +33,14 @@ func (hd imgHandler) list(c *gin.Context) {
 		return
 	}
 	res, err := hd.srv.List(listReq)
+	response.CheckAndRespWithData(c, res, err)
+}
+
+func (hd imgHandler) getVideo(c *gin.Context) {
+	var getReq req.ResourceListReq
+	if response.IsFailWithResp(c, util.VerifyUtil.VerifyQuery(c, &getReq)) {
+		return
+	}
+	res, err := hd.srv.GetVideo(getReq)
 	response.CheckAndRespWithData(c, res, err)
 }

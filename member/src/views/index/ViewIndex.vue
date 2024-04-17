@@ -47,7 +47,7 @@
               :min-scale="0.2"
               :preview-src-list="img_top"
               :initial-index="0"
-              fit="cover"
+              fit="fill"
           />
           <span style="margin-left: 50%">上面</span>
           <el-select
@@ -73,7 +73,7 @@
               :min-scale="0.2"
               :preview-src-list="img_front"
               :initial-index="0"
-              fit="cover"
+              fit="fill"
           />
           <span style="margin-left: 50%">前面</span>
           <el-select
@@ -491,6 +491,11 @@ export default {
       }catch (error){
         console.log(error)
       }
+      this.img_top = [];
+      this.img_front = [];
+      this.img_behind = [];
+      this.img_left = [];
+      this.img_right = [];
     }
   },
   computed: {

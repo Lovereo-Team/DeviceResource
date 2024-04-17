@@ -121,8 +121,14 @@ func (srv resourceService) Detail(id uint) (res req.ResourceResp, e error) {
 
 // Add 溯源列新增
 func (srv resourceService) Add(addReq req.ResourceAddReq) (e error) {
-	fmt.Println("a", addReq)
 	var obj util.Resource
+	model := srv.db.Model(&util.Resource{})
+	model.Find(&obj)
+	if obj.DeviceCode == addReq.DeviceCode {
+		return
+	}
+	addReq.VideoTop = "http://127.0.0.1:8000/api/uploads/image/camera_0/" + addReq.DeviceCode + ".mp4"
+	addReq.VideoFront = "http://127.0.0.1:8000/api/uploads/image/camera_1/" + addReq.DeviceCode + ".mp4"
 	addReq.CreateTime = int(time.Now().Unix())
 	response.Copy(&obj, addReq)
 	fmt.Println("a", obj.Date)
@@ -135,7 +141,7 @@ func (srv resourceService) Add(addReq req.ResourceAddReq) (e error) {
 // Edit 溯源列编辑
 func (srv resourceService) Edit(editReq req.ResourceEditReq) (e error) {
 	var obj util.Resource
-	err := srv.db.Where("id = ?", editReq.Id).Limit(1).First(&obj).Error
+	err := srv.db.Where("device_code = ?", editReq.Id).Limit(1).First(&obj).Error
 	// 校验
 	if e = response.CheckErrDBNotRecord(err, "数据不存在!"); e != nil {
 		return

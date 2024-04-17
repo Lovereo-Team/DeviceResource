@@ -9,7 +9,11 @@
             @close="handleClose"
         >
             <!-- 视频播放器 -->
-            <video controls :src="videoUrl"></video>
+            <video controls preload="load">
+                <source :src="videoUrl" type="video/mp4">
+                <source :src="videoUrl" type="video/ogg">
+                Your browser does not support the video tag.
+            </video>
         </popup>
     </div>
 </template>
@@ -17,6 +21,8 @@
 <script setup lang="ts">
 import Popup from '@/components/popup/index.vue'
 import { ref } from 'vue'
+import { usePaging } from '@/hooks/usePaging'
+import { memberGetVideo, resourceDetail, resourceLists } from '@/api/resource'
 
 const visible = ref(false) // 控制弹窗显示状态
 const videoUrl = ref('') // 视频链接
@@ -33,10 +39,11 @@ const handleClose = () => {
 }
 
 // 定义 open 方法，用于显示视频弹窗并传入视频数据
-const open = (type = 'add') => {
-    mode.value = type
+const open = async (device) => {
+    videoUrl.value = device
     popupRef.value?.open()
 }
+
 defineExpose({
     open
 })

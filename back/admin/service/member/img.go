@@ -10,6 +10,7 @@ import (
 
 type IImgService interface {
 	List(listReq req.ResourceListReq) (res req.ResourceRespRes, e error)
+	GetVideo(getRep req.ResourceListReq) (res req.VideoRespRes, e error)
 }
 
 // NewImgService 初始化
@@ -52,5 +53,45 @@ func (srv imgService) List(listReq req.ResourceListReq) (res req.ResourceRespRes
 
 	return req.ResourceRespRes{
 		Lists: resps,
+	}, nil
+}
+
+func (srv imgService) GetVideo(getRep req.ResourceListReq) (res req.VideoRespRes, e error) {
+	model := srv.db.Model(&util.Resource{})
+	model = model.Where("device_code = ?", getRep.DeviceCode)
+	// 总数
+	var count int64
+	err := model.Count(&count).Error
+	if e = response.CheckErr(err, "List Count err"); e != nil {
+		return
+	}
+	var objs util.Resource
+	err = model.Order("id desc").Find(&objs).Error
+	if e = response.CheckErr(err, "List Find err"); e != nil {
+		return
+	}
+
+	videoTop := objs.VideoTop
+	videoFront := objs.VideoFront
+	videoBehind := objs.VideoBehind
+	videoLeft := objs.VideoLeft
+	videoRight := objs.VideoRight
+	/*for _, obj := range objs {
+		img := req.Img{
+			ImgTop:    strings.Split(obj.ImgTop, ","),
+			ImgFront:  strings.Split(obj.ImgFront, ","),
+			ImgBehind: strings.Split(obj.ImgBehind, ","),
+			ImgLeft:   strings.Split(obj.ImgLeft, ","),
+			ImgRight:  strings.Split(obj.ImgRight, ","),
+		}
+		resps = append(resps, img)
+	}*/
+
+	return req.VideoRespRes{
+		VideoTop:    videoTop,
+		VideoFront:  videoFront,
+		VideoBehind: videoBehind,
+		VideoLeft:   videoLeft,
+		VideoRight:  videoRight,
 	}, nil
 }

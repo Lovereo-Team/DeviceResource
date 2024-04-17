@@ -24,3 +24,7 @@ export function resourceEdit(params: Record<string, any>) {
 export function resourceDelete(params: Record<string, any>) {
     return request.post({ url: '/resource/del', params })
 }
+
+export function memberGetVideo(params: Record<string, any>){
+    return request.get({url: "/member/getVideo", params})
+}
