@@ -7,6 +7,7 @@ import (
 	"DeviceResource/core/response"
 	sysModel "DeviceResource/model/system"
 	"DeviceResource/util"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"strconv"
 	"strings"
@@ -26,6 +27,13 @@ func TokenAuth() gin.HandlerFunc {
 
 		// 免登录接口
 		if util.ToolsUtil.Contains(config.AdminConfig.NotLoginUri, auths) {
+			fmt.Println("a")
+			c.Next()
+			return
+		}
+
+		if util.ToolsUtil.Contains(config.MemberConfig.NotLoginUri, auths) {
+
 			c.Next()
 			return
 		}
@@ -112,6 +120,11 @@ func TokenAuth() gin.HandlerFunc {
 
 		// 免权限验证接口
 		if util.ToolsUtil.Contains(config.AdminConfig.NotAuthUri, auths) || uid == 1 {
+			c.Next()
+			return
+		}
+
+		if util.ToolsUtil.Contains(config.MemberConfig.NotAuthUri, auths) || uid == 1 {
 			c.Next()
 			return
 		}

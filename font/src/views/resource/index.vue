@@ -36,7 +36,7 @@
                 v-loading="pager.loading"
                 :data="pager.lists"
             >
-                <el-table-column label="员工编号" prop="memberId" min-width="100" />
+                <el-table-column label="员工编号" prop="memberId" min-width="60" />
                 <el-table-column label="设备编号" prop="deviceCode" min-width="100" />
                 <el-table-column label="扫码日期" prop="date" min-width="100" />
                 <el-table-column label="图片_上" prop="imgTop" min-width="100" >
@@ -55,15 +55,92 @@
                                 </div>
                             </template>
                         </el-image>
+                        <el-button
+                            v-perms="['resource:video']"
+                            type="primary"
+                            link
+                            @click="handleVideo()"
+                        >
+                            视频
+                        </el-button>
                     </template>
                 </el-table-column>
-                <el-table-column label="图片_前" prop="imgFront" min-width="100" />
-                <el-table-column label="图片_后" prop="imgBehind" min-width="100" />
-                <el-table-column label="图片_左" prop="imgLeft" min-width="100" />
-                <el-table-column label="图片_右" prop="imgRight" min-width="100" />
-                <el-table-column label="图片集合" prop="imgS" min-width="100" />
+                <el-table-column label="图片_前" prop="imgFront" min-width="100" >
+                    <template #default="scope">
+                        <el-image
+                            style="width: 40px; height: 40px"
+                            :src="scope.row.imgFront"
+                            :preview-src-list="[scope.row.imgFront]"
+                            :hide-on-click-modal="true"
+                            :preview-teleported="true"
+                            fit="cover"
+                        >
+                            <template #error>
+                                <div class="h-full flex justify-center items-center iconStyle">
+                                    <el-icon :size="30"><Warning /></el-icon>
+                                </div>
+                            </template>
+                        </el-image>
+                    </template>
+                </el-table-column>
+                <el-table-column label="图片_后" prop="imgBehind" min-width="100" >
+                    <template #default="scope">
+                        <el-image
+                            style="width: 40px; height: 40px"
+                            :src="scope.row.imgBehind"
+                            :preview-src-list="[scope.row.imgBehind]"
+                            :hide-on-click-modal="true"
+                            :preview-teleported="true"
+                            fit="cover"
+                        >
+                            <template #error>
+                                <div class="h-full flex justify-center items-center iconStyle">
+                                    <el-icon :size="30"><Warning /></el-icon>
+                                </div>
+                            </template>
+                        </el-image>
+                    </template>
+                </el-table-column>
+                <el-table-column label="图片_左" prop="imgLeft" min-width="100" >
+                    <template #default="scope">
+                        <el-image
+                            style="width: 40px; height: 40px"
+                            :src="scope.row.imgLeft"
+                            :preview-src-list="[scope.row.imgLeft]"
+                            :hide-on-click-modal="true"
+                            :preview-teleported="true"
+                            fit="cover"
+                        >
+                            <template #error>
+                                <div class="h-full flex justify-center items-center iconStyle">
+                                    <el-icon :size="30"><Warning /></el-icon>
+                                </div>
+                            </template>
+                        </el-image>
+                    </template>
+                </el-table-column>
+                <el-table-column label="图片_右" prop="imgRight" min-width="100" >
+                    <template #default="scope">
+                        <el-image
+                            style="width: 40px; height: 40px"
+                            :src="scope.row.imgRight"
+                            :preview-src-list="[scope.row.imgRight]"
+                            :hide-on-click-modal="true"
+                            :preview-teleported="true"
+                            fit="cover"
+                        >
+                            <template #error>
+                                <div class="h-full flex justify-center items-center iconStyle">
+                                    <el-icon :size="30"><Warning /></el-icon>
+                                </div>
+                            </template>
+                        </el-image>
+
+                    </template>
+                </el-table-column>
+<!--                <el-table-column label="图片集合" prop="imgS" min-width="100" />-->
                 <el-table-column label="视频" prop="video" min-width="100" />
-                <el-table-column label="创建时间" prop="createTime" min-width="100" />
+                <el-table-column label="创建时间" prop="createTime" min-width="150" />
                 <el-table-column label="操作" width="120" fixed="right">
                     <template #default="{ row }">
                         <el-button
@@ -95,6 +172,12 @@
             @success="getLists"
             @close="showEdit = false"
         />
+        <video-group
+            v-if="showVideo"
+            ref="videoRef"
+            @success="getLists"
+            @close="showVideo = false"
+        />
     </div>
 </template>
 <script lang="ts" setup name="resource">
@@ -102,8 +185,11 @@ import { resourceDelete, resourceLists } from '@/api/resource'
 import { usePaging } from '@/hooks/usePaging'
 import feedback from '@/utils/feedback'
 import EditPopup from './components/edit.vue'
+import VideoGroup from './components/video.vue'
 const editRef = shallowRef<InstanceType<typeof EditPopup>>()
+const videoRef = shallowRef<InstanceType<typeof VideoGroup>>()
 const showEdit = ref(false)
+const showVideo = ref(false)
 const queryParams = reactive({
     member_id: '',
     device_code: '',
@@ -117,23 +203,34 @@ const queryParams = reactive({
     // video: '',
 })
 
+
 const { pager, getLists, resetPage, resetParams } = usePaging({
     fetchFun: resourceLists,
     params: queryParams
 })
 
 
-/*const handleAdd = async () => {
+const handleAdd = async () => {
     showEdit.value = true
     await nextTick()
     editRef.value?.open('add')
-}*/
+}
 
 const handleEdit = async (data: any) => {
     showEdit.value = true
+    console.log(data)
     await nextTick()
+
     editRef.value?.open('edit')
     editRef.value?.getDetail(data)
+}
+
+const handleVideo = async () => {
+    showVideo.value = true
+    await nextTick()
+
+    videoRef.value?.open('video')
+    // videoRef.value?.getDetail(data)
 }
 
 const handleDelete = async (id: number) => {

@@ -2,6 +2,7 @@ package routers
 
 import (
 	"DeviceResource/admin/routers/common"
+	"DeviceResource/admin/routers/member"
 	"DeviceResource/admin/routers/monitor"
 	"DeviceResource/admin/routers/setting"
 	"DeviceResource/admin/routers/system"
@@ -13,6 +14,10 @@ var InitRouters = []*core.GroupBase{
 	common.AlbumGroup,
 	common.IndexGroup,
 	common.UploadGroup,
+	// member
+	member.LoginGroup,
+	member.InfoGroup,
+	member.ImgGroup,
 	// monitor
 	monitor.MonitorGroup,
 	// setting
@@ -32,4 +37,5 @@ var InitRouters = []*core.GroupBase{
 	system.RoleGroup,
 	system.MemberGroup,
 	system.ResourceGroup,
+	system.AlbumGroup,
 }

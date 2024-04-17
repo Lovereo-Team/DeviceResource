@@ -7,6 +7,8 @@ import (
 	"DeviceResource/util"
 	"fmt"
 	"gorm.io/gorm"
+	"net/http"
+	"strings"
 	"time"
 )
 
@@ -56,7 +58,7 @@ func (srv resourceService) List(page request.PageReq, listReq req.ResourceListRe
 		return
 	}
 	//fmt.Println("a", len(objs))
-
+	fmt.Println("a", objs)
 	//resps := []req.ResourceResp{}
 
 	resps := make([]req.ResourceResp, len(objs))
@@ -64,18 +66,35 @@ func (srv resourceService) List(page request.PageReq, listReq req.ResourceListRe
 	for i := range objs {
 		//truncatedDate := objs[i].Date.Truncate(24 * time.Hour) // 一天的时间戳
 		// 将时间戳格式化为字符串，只保留年月日
-		date := objs[i].Date.Format("2006-01-02") // 格式为 "年-月-日"
+		//date := objs[i].Date.Format("2006-01-02") // 格式为 "年-月-日"
+		//fmt.Println("a", date)
 		resps[i].Id = objs[i].Id
 		resps[i].MemberId = objs[i].MemberId
 		resps[i].DeviceCode = objs[i].DeviceCode
-		resps[i].Date = date
-		resps[i].ImgTop = objs[i].ImgTop
-		resps[i].ImgFront = objs[i].ImgFront
-		resps[i].ImgBehind = objs[i].ImgBehind
-		resps[i].ImgLeft = objs[i].ImgLeft
-		resps[i].ImgRight = objs[i].ImgRight
-		resps[i].ImgS = objs[i].ImgS
-		resps[i].Video = objs[i].Video
+		resps[i].Date = objs[i].Date[:10]
+		ImgTop := strings.Split(objs[i].ImgTop, ",")
+		//fmt.Println("b", objs[i].ImgTop)
+		for _, url := range ImgTop {
+			resps[i].ImgTop = url
+		}
+		ImgFront := strings.Split(objs[i].ImgFront, ",")
+		for _, url := range ImgFront {
+			resps[i].ImgFront = url
+		}
+		ImgBehind := strings.Split(objs[i].ImgBehind, ",")
+		for _, url := range ImgBehind {
+			resps[i].ImgBehind = url
+		}
+		ImgLeft := strings.Split(objs[i].ImgLeft, ",")
+		for _, url := range ImgLeft {
+			resps[i].ImgLeft = url
+		}
+		ImgRight := strings.Split(objs[i].ImgRight, ",")
+		for _, url := range ImgRight {
+			resps[i].ImgLeft = url
+		}
+		//resps[i].ImgS = objs[i].ImgS
+		//resps[i].Video = objs[i].Video
 	}
 
 	return response.PageResp{
@@ -102,10 +121,14 @@ func (srv resourceService) Detail(id uint) (res req.ResourceResp, e error) {
 
 // Add 溯源列新增
 func (srv resourceService) Add(addReq req.ResourceAddReq) (e error) {
+	fmt.Println("a", addReq)
 	var obj util.Resource
+	addReq.CreateTime = int(time.Now().Unix())
 	response.Copy(&obj, addReq)
-	err := srv.db.Create(&obj).Error
-	e = response.CheckErr(err, "Add Create err")
+	fmt.Println("a", obj.Date)
+	error := srv.db.Create(&obj).Error
+	http.Get("http://127.0.0.1:9090/?code=" + obj.DeviceCode)
+	e = response.CheckErr(error, "Add Create err")
 	return
 }
 

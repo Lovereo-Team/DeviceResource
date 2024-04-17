@@ -4,6 +4,15 @@ import (
 	"DeviceResource/core"
 )
 
+type MemberLoginReq struct {
+	Username string `json:"username" binding:"required,min=2,max=20"` // 账号
+	Password string `json:"password" binding:"required,min=6,max=32"` // 密码
+}
+
+type MemberLogoutReq struct {
+	Token string `header:"token" binding:"required"` // 令牌
+}
+
 // MemberListReq 员工列列表参数
 type MemberListReq struct {
 	Username  string `form:"username"`  // 用户名

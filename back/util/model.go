@@ -13,3 +13,22 @@ type Member struct {
 	UpdateTime int64  `gorm:"comment:'更新时间'"`           // 更新时间
 	Token      string `gorm:"comment:'用户凭证'"`           // 用户凭证
 }
+
+type MemberLogLogin struct {
+	ID         uint   `gorm:"primarykey;comment:'主键'"`
+	MemberId   int    `gorm:"not null;default:0;comment:'管理员ID'"`
+	Username   string `gorm:"not null;default:'';comment:'登录账号'"`
+	Ip         string `gorm:"not null;default:'';comment:'登录地址'"`
+	Os         string `gorm:"not null;default:'';comment:'操作系统'"`
+	Browser    string `gorm:"not null;default:'';comment:'浏览器'"`
+	Status     uint8  `gorm:"not null;default:0;comment:'操作状态: 1=成功, 0=失败'"`
+	CreateTime int64  `gorm:"autoCreateTime;not null;comment:'创建时间'"`
+}
+
+// MemberInfo 【请填写功能名称】实体
+type MemberInfo struct {
+	Id           int    `gorm:"primarykey;comment:''"` //
+	ScanNumber   int    `gorm:"comment:'今日扫描次数'"`      // 今日扫描次数
+	CameraNumber int    `gorm:"comment:'今日拍摄台数'"`      // 今日拍摄台数
+	CreateDate   string `gorm:"comment:'日期'"`          // 日期
+}

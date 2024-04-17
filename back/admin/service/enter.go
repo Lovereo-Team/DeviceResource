@@ -2,6 +2,7 @@ package service
 
 import (
 	"DeviceResource/admin/service/common"
+	"DeviceResource/admin/service/member"
 	"DeviceResource/admin/service/setting"
 	"DeviceResource/admin/service/system"
 )
@@ -11,6 +12,11 @@ var InitFunctions = []interface{}{
 	common.NewAlbumService,
 	common.NewIndexService,
 	common.NewUploadService,
+	// member
+	member.NewMemberAuthAdminService,
+	member.NewMemberLoginService,
+	member.NewInfoService,
+	member.NewImgService,
 	// setting
 	setting.NewSettingCopyrightService,
 	setting.NewSettingDictDataService,
@@ -29,4 +35,5 @@ var InitFunctions = []interface{}{
 	system.NewSystemLogsServer,
 	system.NewMemberService,
 	system.NewResourceService,
+	system.NewAlbumService,
 }

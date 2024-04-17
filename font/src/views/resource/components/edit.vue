@@ -80,7 +80,7 @@ const formData = reactive({
     id: '',
     // member_id: '',
     // device_code: '',
-    // date: '',
+    date: '',
     imgTop: '',
     imgFront: '',
     imgBehind: '',
