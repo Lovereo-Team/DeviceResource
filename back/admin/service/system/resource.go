@@ -122,18 +122,28 @@ func (srv resourceService) Detail(id uint) (res req.ResourceResp, e error) {
 // Add 溯源列新增
 func (srv resourceService) Add(addReq req.ResourceAddReq) (e error) {
 	var obj util.Resource
+
 	model := srv.db.Model(&util.Resource{})
 	model.Find(&obj)
+	fmt.Println(obj)
 	if obj.DeviceCode == addReq.DeviceCode {
+		srv.db.Where("device_code = ?", addReq.DeviceCode)
+		addReq.CreateTime = int(time.Now().Unix())
+		response.Copy(&obj, addReq)
+		fmt.Println("a2", obj)
+		http.Get("http://127.0.0.1:9090/?code=" + obj.DeviceCode)
+		srv.db.Model(&obj).Updates(obj)
 		return
 	}
+	var obj_1 util.Resource
 	addReq.VideoTop = "http://127.0.0.1:8000/api/uploads/image/camera_0/" + addReq.DeviceCode + ".mp4"
 	addReq.VideoFront = "http://127.0.0.1:8000/api/uploads/image/camera_1/" + addReq.DeviceCode + ".mp4"
 	addReq.CreateTime = int(time.Now().Unix())
-	response.Copy(&obj, addReq)
-	fmt.Println("a", obj.Date)
-	error := srv.db.Create(&obj).Error
-	http.Get("http://127.0.0.1:9090/?code=" + obj.DeviceCode)
+	response.Copy(&obj_1, addReq)
+	fmt.Println("a", obj_1)
+	fmt.Println("a", obj_1.Date)
+	error := srv.db.Create(&obj_1).Error
+	http.Get("http://127.0.0.1:9090/?code=" + obj_1.DeviceCode)
 	e = response.CheckErr(error, "Add Create err")
 	return
 }

@@ -93,7 +93,7 @@
         <div class="box">
           <el-image
               style="width: 100%; height: 55%"
-              :src="selectedBehendIndex"
+              :src="selectedImgBehend"
               :zoom-rate="1.2"
               :max-scale="7"
               :min-scale="0.2"
@@ -317,7 +317,7 @@ export default {
       img_behind: [],
       img_left: [],
       img_right: [],
-      token: 'e48cfc2140eef8e3b11b4d925b7f87daQn5BYA',
+      token: '06c0626c3659ac68358cb88b3deeed87JfMjE1',
     };
   },
   mounted() {
@@ -435,8 +435,8 @@ export default {
             "Token": this.token
           }
         },);
-        console.log(response.data);
-        let img = response.data.data.lists[0]
+        console.log(response.data.data.lists);
+        let img = response.data.data.lists
         this.img_top = img.imgTop;
         this.img_front = img.imgFront;
         this.img_behind = img.imgBehind;
@@ -444,7 +444,7 @@ export default {
         this.img_right = img.imgRight;
         console.log(this.img_top)
         var that = this
-        if (this.img_top != null && this.img_front != null){
+        if (response.data.code == 200){
           that.loading = false
         }
 
@@ -500,19 +500,19 @@ export default {
   },
   computed: {
     selectedImgTop() {
-      return this.img_top[this.selectedTopIndex] || ''; // 根据选中的索引获取对应的图片
+      return this.img_top[this.selectedTopIndex]+"?t="+Math.random() || ''; // 根据选中的索引获取对应的图片
     },
     selectedImgFront() {
-      return this.img_front[this.selectedFrontIndex] || ''; // 根据选中的索引获取对应的图片
+      return this.img_front[this.selectedFrontIndex]+"?t="+Math.random() || ''; // 根据选中的索引获取对应的图片
     },
     selectedImgBehend() {
-      return this.img_behind[this.selectedBehendIndex] || ''; // 根据选中的索引获取对应的图片
+      return this.img_behind[this.selectedBehendIndex]+"?t="+Math.random() || ''; // 根据选中的索引获取对应的图片
     },
     selectedImgLeft() {
-      return this.img_left[this.selectedLeftIndex] || ''; // 根据选中的索引获取对应的图片
+      return this.img_left[this.selectedLeftIndex]+"?t="+Math.random() || ''; // 根据选中的索引获取对应的图片
     },
     selectedImgRight() {
-      return this.img_right[this.selectedRightIndex] || ''; // 根据选中的索引获取对应的图片
+      return this.img_right[this.selectedRightIndex]+"?t="+Math.random() || ''; // 根据选中的索引获取对应的图片
     },
 
   },

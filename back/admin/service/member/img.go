@@ -49,10 +49,11 @@ func (srv imgService) List(listReq req.ResourceListReq) (res req.ResourceRespRes
 			ImgRight:  strings.Split(obj.ImgRight, ","),
 		}
 		resps = append(resps, img)
+
 	}
 
 	return req.ResourceRespRes{
-		Lists: resps,
+		Lists: resps[0],
 	}, nil
 }
 

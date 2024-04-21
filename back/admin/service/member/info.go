@@ -26,14 +26,9 @@ func (srv infoService) List(listReq req.MemberInfoListReq) (res req.MemberInfoRe
 	model := srv.db.Model(&util.MemberInfo{})
 	model = model.Where("create_date = ?", listReq.CreateDate)
 	// 总数
-	var count int64
-	err := model.Count(&count).Error
-	if e = response.CheckErr(err, "List Count err"); e != nil {
-		return
-	}
 	// 数据
 	var obj util.MemberInfo
-	err = model.Find(&obj).Error
+	err := model.Find(&obj).Error
 	if e = response.CheckErr(err, "List Find err"); e != nil {
 		return
 	}
