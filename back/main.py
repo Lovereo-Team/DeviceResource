@@ -1,54 +1,85 @@
-from fastapi import FastAPI, Response, Query
-from starlette.responses import StreamingResponse
+from datetime import datetime
+
 import cv2
-import mysql.connector
-import os
-import asyncio
+import multiprocessing
 import time
+import os
+
+import mysql.connector
+from fastapi import FastAPI, Query
 
 app = FastAPI()
 
-# RTSP地址列表
-rtsp_urls = [
-    "rtsp://admin:a1234567@192.168.31.68/Streaming/Channels/1",
-    "rtsp://admin:a1234567@192.168.31.71:554/Streaming/Channels/1",
-    "rtsp://admin:admin123!@192.168.31.100/Streaming/Channels/1",
-]
+def record_video_stream(url, queue, code, index, duration=3, num_frames_to_capture=5):
+    t1 = time.time()
+    cap = cv2.VideoCapture(url)
+    print("time", time.time() - t1)
+    if not cap.isOpened():
+        print(f"Error opening video stream {url}")
+        return
 
-video_captures = [cv2.VideoCapture(rtsp_url) for rtsp_url in rtsp_urls]
-
-async def generate_frames(cap, camera_index, code):
-#     cap = cv2.VideoCapture(rtsp_url)
-    frame_count = 0
-
-    # 创建文件夹以保存视频和图片
-    folder_name = f"www/wwwroot/likeadmin_go/public/uploads/image/camera_{camera_index}"
+    # Create a valid filename from the URL
+    folder_name = f"www/wwwroot/likeadmin_go/public/uploads/image/camera_{index}"
     os.makedirs(folder_name, exist_ok=True)
-    video_writer = cv2.VideoWriter(f"{folder_name}/{code}.mp4", cv2.VideoWriter_fourcc(*'mp4v'), cap.get(cv2.CAP_PROP_FPS), (int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))))
+    output_path = os.path.join(os.getcwd(), f"{folder_name}/{code}.mp4")
 
-    image_paths = []  # 用于存储图片路径的列表
-    T1 = time.time()
-    while frame_count < 5 * cap.get(cv2.CAP_PROP_FPS):
+
+    # Define the codec and create VideoWriter object
+    fps = cap.get(cv2.CAP_PROP_FPS)
+    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+    out = cv2.VideoWriter(output_path, fourcc, fps, (int(cap.get(3)), int(cap.get(4))))
+
+    captured_frames = 0
+    total_frames = 0
+    image_paths = []
+
+    start_time = time.time()
+    while (time.time() - start_time) < duration:
         ret, frame = cap.read()
         if not ret:
             break
+        out.write(frame)  # Write the frame into the file
 
-        # 每秒截取一张图片
-        if frame_count % cap.get(cv2.CAP_PROP_FPS) == 0:
-            image_path = f"{folder_name}/{code}_{frame_count // cap.get(cv2.CAP_PROP_FPS)}.jpg"
-            cv2.imwrite(image_path, frame, [cv2.IMWRITE_JPEG_QUALITY, 50])
-            img_path = f"camera_{camera_index}/{code}_{frame_count // cap.get(cv2.CAP_PROP_FPS)}.jpg"
+        # Capture a frame at the specified interval
+        if total_frames % fps == 0 and captured_frames < num_frames_to_capture:
+            cv2.imwrite(os.path.join(os.getcwd(), f"{folder_name}/{code}_frame{captured_frames + 1}_{str(int(time.time()))}.jpg"), frame)
+            img_path = f"camera_{index}/{code}_frame{captured_frames + 1}_{str(int(time.time()))}.jpg"
             print(img_path)
-            image_paths.append("http://127.0.0.1:8000/api/uploads/image/"+img_path)  # 将图片路径添加到列表中
+            image_paths.append("http://127.0.0.1:8000/api/uploads/image/" + img_path)  # 将图片路径添加到列表中
+            captured_frames += 1
 
-        # 保存视频
-        video_writer.write(frame)
-        frame_count += 1
-        await asyncio.sleep(0.001 / cap.get(cv2.CAP_PROP_FPS))
-    T2 = time.time()
-    print((T2-T1))
-    return image_paths  # 返回图片路径列表
+        total_frames += 1
 
+    # Release everything when the job is finished
+    cap.release()
+    out.release()
+    queue.put(image_paths)
+
+def main(code):
+    rtsp_urls = [
+        "rtsp://admin:a1234567@192.168.31.68:554/Streaming/Channels/1",
+        "rtsp://admin:a1234567@192.168.31.71:554/Streaming/Channels/1",
+    ]
+
+    frame_queue = multiprocessing.Queue()
+    processes = []
+    num_cameras = len(rtsp_urls)
+
+    for index, url in enumerate(rtsp_urls):
+        process = multiprocessing.Process(target=record_video_stream, args=(url, frame_queue, code, index))
+        process.start()
+        processes.append(process)
+
+    image_results = [] * num_cameras
+    for _ in range(num_cameras):
+        image_paths = frame_queue.get()  # This will block until it receives a result
+        image_results.append(image_paths)
+
+    # Wait for all processes to complete
+    for process in processes:
+        process.join()
+
+    return image_results
 
 def insert_image_path_to_database(image_paths_1, image_paths_2, image_paths_3, code):
     # 假设使用 mysql-connector-python 来连接 MySQL 数据库
@@ -73,22 +104,12 @@ def insert_image_path_to_database(image_paths_1, image_paths_2, image_paths_3, c
     cursor.close()
     connection.close()
 
-
 @app.get("/")
-async def get_video_feed(response: Response, code: str = Query(...)):
-    # 设置响应头，指示返回的是multipart格式的数据
-    response.headers['Content-Type'] = 'multipart/x-mixed-replace; boundary=frame'
+async def capture_cameras(code: str = Query(...)):
+    image_results = main(code)
+    if image_results:
+        # Assume you have a function to handle the database insertion
+        insert_image_path_to_database(image_results[0], image_results[1], [], code)
+    return {"status": "success", "data": image_results}
 
-    # 捕获每个摄像头的视频流
-    async def stream_multiple_cameras():
-        tasks = [asyncio.create_task(generate_frames(cap, i, code)) for i, cap in enumerate(video_captures)]
-        # 并行执行多个异步任务
-        image_paths_lists = await asyncio.gather(*tasks)
-        # 将图片路径列表传递给插入数据库函数
-        insert_image_path_to_database(image_paths_lists[0], image_paths_lists[1], image_paths_lists[2], code)
 
-    # 执行异步任务
-    await stream_multiple_cameras()
-
-    # 返回空白数据流，因为数据已经被写入数据库，不需要再返回图片数据
-    return StreamingResponse(iter([]))

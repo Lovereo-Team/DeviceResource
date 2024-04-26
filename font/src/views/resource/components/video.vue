@@ -9,7 +9,7 @@
             @close="handleClose"
         >
             <!-- 视频播放器 -->
-            <video controls preload="load">
+            <video width="600" height="300" controls autoplay >
                 <source :src="videoUrl" type="video/mp4">
                 <source :src="videoUrl" type="video/ogg">
                 Your browser does not support the video tag.

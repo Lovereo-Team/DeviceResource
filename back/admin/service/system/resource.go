@@ -115,6 +115,26 @@ func (srv resourceService) Detail(id uint) (res req.ResourceResp, e error) {
 	if e = response.CheckErr(err, "Detail First err"); e != nil {
 		return
 	}
+	ImgTop := strings.Split(obj.ImgTop, ",")
+	for _, url := range ImgTop {
+		obj.ImgTop = url
+	}
+	ImgFront := strings.Split(obj.ImgFront, ",")
+	for _, url := range ImgFront {
+		obj.ImgFront = url
+	}
+	ImgBehind := strings.Split(obj.ImgBehind, ",")
+	for _, url := range ImgBehind {
+		obj.ImgBehind = url
+	}
+	ImgLeft := strings.Split(obj.ImgLeft, ",")
+	for _, url := range ImgLeft {
+		obj.ImgLeft = url
+	}
+	ImgRight := strings.Split(obj.ImgRight, ",")
+	for _, url := range ImgRight {
+		obj.ImgLeft = url
+	}
 	response.Copy(&res, obj)
 	return
 }

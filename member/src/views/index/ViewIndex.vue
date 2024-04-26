@@ -317,7 +317,7 @@ export default {
       img_behind: [],
       img_left: [],
       img_right: [],
-      token: '06c0626c3659ac68358cb88b3deeed87JfMjE1',
+      token: '99966b4201c8b51cdb89e741772dc46eE0Gxoq',
     };
   },
   mounted() {
@@ -350,7 +350,7 @@ export default {
         this.updateInfo()
         setTimeout(() => {
           this.getImg();
-        }, 5000);
+        }, 10*1000);
         // this.getImg()
         code = ''
         lastCode = ''
