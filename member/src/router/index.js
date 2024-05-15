@@ -1,21 +1,26 @@
-// 此文件专门负责项目的路由
+import { createRouter, createWebHistory } from 'vue-router';
+import LoginView from '@/views/login/LoginView.vue';
+import ViewIndex from '@/views/index/ViewIndex.vue';
 
-import VueRouter from "vue-router"
+const routes = [
+    {
+        path: '/',
+        redirect: '/login'
+    },
+    {
+        path: '/login',
+        component: LoginView
+    },
+    {
+        path: '/dashboard',
+        component: ViewIndex,
+        name: 'dashboard' // 添加路由名称为 'dashboard'
+    }
+];
 
-// 引入组件
-import Login from '@/views/login/LoginView.vue'
+const router = createRouter({
+    history: createWebHistory(),
+    routes
+});
 
-// 创建并暴露一个路由器
-export default new VueRouter({
-    mode: 'history',    // 路由模式，该模式不会在地址中显示井号#
-    routes: [
-        {
-            path: '/',          // 路径
-            redirect: '/login'  // 重定向
-        },
-        {
-            path: '/login',     // 路径
-            component: Login    // 跳转到的组件
-        }
-    ]
-})
+export default router;

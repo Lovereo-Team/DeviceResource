@@ -1,5 +1,5 @@
 <template>
-  <div class="common-layout" v-loading="loading">
+  <div v-loading="loading" class="common-layout">
     <el-container>
       <el-header class="header">
         <div class="header_1">
@@ -10,296 +10,114 @@
         </div>
         <div class="header_2">
           <div class="block first-block">
-            <p>日期</p>
-            <span>{{currentDate}}</span>
+            <view class="boxer">
+              <p>日期</p>
+              <span>{{ currentDate }}</span>
+            </view>
             <img src="../../assets/Calendar.svg">
           </div>
           <div class="block">
-            <p>时间</p>
-            <span>{{currentTime}}</span>
+            <view class="boxer">
+              <p>时间</p>
+              <span>{{ currentTime }}</span>
+            </view>
             <img src="../../assets/clock.svg">
           </div>
           <div class="block">
-            <p>当前设备ID</p>
-            <span>{{code}}</span>
+            <view class="boxer">
+              <p>当前设备ID</p>
+              <span>{{ code }}</span>
+            </view>
             <img src="../../assets/tag.svg">
           </div>
           <div class="block">
-            <p>今日扫描次数</p>
-            <span>{{scanNumber}}</span>
+            <view class="boxer">
+              <p>今日扫描次数</p>
+              <span>{{ scanNumber }}</span>
+            </view>
             <img src="../../assets/printer.svg">
           </div>
           <div class="block">
-            <p>今日拍摄台数</p>
-            <span>{{cameraNumber}}</span>
+            <view class="boxer">
+              <p>今日拍摄台数</p>
+              <span>{{ cameraNumber }}</span>
+            </view>
             <img src="../../assets/camera_header.svg">
           </div>
         </div>
       </el-header>
       <el-main class="main">
         <p>设备图像</p>
-        <div class="box first-box">
-          <el-image
-              style="width: 100%; height: 55%"
-              :src="selectedImgTop"
-              :zoom-rate="1.2"
-              :max-scale="7"
-              :min-scale="0.2"
-              :preview-src-list="img_top"
-              :initial-index="0"
-              fit="fill"
-          />
-          <span style="margin-left: 50%">上面</span>
-          <el-select
-              v-model="selectedTopIndex"
-              placeholder="Select"
-              size="large"
-              style="width: 77%; margin-top: 42px; margin-left: 30px"
-          >
-            <el-option
-                v-for="(item, index) in img_top"
-                :key="index"
-                :label="`Image ${index + 1}`"
-                :value="index"
-            />
-          </el-select>
-        </div>
-        <div class="box">
-          <el-image
-              style="width: 100%; height: 55%"
-              :src="selectedImgFront"
-              :zoom-rate="1.2"
-              :max-scale="7"
-              :min-scale="0.2"
-              :preview-src-list="img_front"
-              :initial-index="0"
-              fit="fill"
-          />
-          <span style="margin-left: 50%">前面</span>
-          <el-select
-              v-model="selectedFrontIndex"
-              placeholder="Select"
-              size="large"
-              style="width: 77%; margin-top: 42px; margin-left: 30px"
-          >
-            <el-option
-                v-for="(item, index) in img_front"
-                :key="index"
-                :label="`Image ${index + 1}`"
-                :value="index"
-            />
-          </el-select>
-        </div>
-        <div class="box">
-          <el-image
-              style="width: 100%; height: 55%"
-              :src="selectedImgBehend"
-              :zoom-rate="1.2"
-              :max-scale="7"
-              :min-scale="0.2"
-              :preview-src-list="img_behind"
-              :initial-index="0"
-              fit="cover"
-          />
-          <span style="margin-left: 50%">后面</span>
-          <el-select
-              v-model="selectedBehendIndex"
-              placeholder="Select"
-              size="large"
-              style="width: 77%; margin-top: 42px; margin-left: 30px"
-          >
-            <el-option
-                v-for="(item, index) in img_behind"
-                :key="index"
-                :label="`Image ${index + 1}`"
-                :value="index"
-            />
-          </el-select>
-        </div>
-        <div class="box">
-          <el-image style="width: 100%; height: 55%" :src="img_left[0]" :fit="fit" />
-          <span style="margin-left: 50%">左面</span>
-          <el-select
-              v-model="value"
-              placeholder="Select"
-              size="large"
-              style="width: 77%; margin-top: 42px; margin-left: 30px"
-          >
-            <el-option
-                v-for="item in img_left"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-            />
-          </el-select>
-        </div>
-        <div class="box">
-          <el-image style="width: 100%; height: 55%" :src="img_right[0]" :fit="fit" />
-          <span style="margin-left: 50%">右面</span>
-          <el-select
-              v-model="value"
-              placeholder="Select"
-              size="large"
-              style="width: 77%; margin-top: 42px; margin-left: 30px"
-          >
-            <el-option
-                v-for="item in img_right"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-            />
-          </el-select>
-        </div>
+        <view class="image-boxer">
+          <div class="box first-box">
+            <el-image :initial-index="0" :max-scale="7" :min-scale="0.2" :preview-src-list="img_top"
+                      :src="selectedImgTop" :zoom-rate="1.2" fit="fill" style="width: 100%; height: 55%" />
+            <span class="image-text">上面</span>
+            <el-select v-model="selectedTopIndex" placeholder="Select" size="large"
+                       style="width: 70%;">
+              <el-option v-for="(item, index) in img_top" :key="index" :label="`Image ${index + 1}`"
+                         :value="index" />
+            </el-select>
+          </div>
+          <div class="box">
+            <el-image :initial-index="0" :max-scale="7" :min-scale="0.2" :preview-src-list="img_front"
+                      :src="selectedImgFront" :zoom-rate="1.2" fit="fill" style="width: 100%; height: 55%" />
+            <span class="image-text">前面</span>
+            <el-select v-model="selectedFrontIndex" placeholder="Select" size="large"
+                       style="width: 70%;">
+              <el-option v-for="(item, index) in img_front" :key="index" :label="`Image ${index + 1}`"
+                         :value="index" />
+            </el-select>
+          </div>
+          <div class="box">
+            <el-image :initial-index="0" :max-scale="7" :min-scale="0.2" :preview-src-list="img_behind"
+                      :src="selectedImgBehend" :zoom-rate="1.2" fit="cover" style="width: 100%; height: 55%" />
+            <span class="image-text">后面</span>
+            <el-select v-model="selectedBehendIndex" placeholder="Select" size="large"
+                       style="width: 70%;">
+              <el-option v-for="(item, index) in img_behind" :key="index" :label="`Image ${index + 1}`"
+                         :value="index" />
+            </el-select>
+          </div>
+          <div class="box">
+            <el-image :fit="fill" :src="img_left[0]" style="width: 100%; height: 55%" />
+            <span class="image-text">左面</span>
+            <el-select v-model="value" placeholder="Select" size="large"
+                       style="width: 70%;">
+              <el-option v-for="item in img_left" :key="item.value" :label="item.label"
+                         :value="item.value" />
+            </el-select>
+          </div>
+          <div class="box">
+            <el-image :fit="fill" :src="img_right[0]" style="width: 100%; height: 55%" />
+            <span class="image-text">右面</span>
+            <el-select v-model="value" placeholder="Select" size="large"
+                       style="width: 70%;">
+              <el-option v-for="item in img_right" :key="item.value" :label="item.label"
+                         :value="item.value" />
+            </el-select>
+          </div>
+        </view>
       </el-main>
       <el-footer class="footer">
         <p>设备图像</p>
         <div class="footer-content">
-
           <div class="button-group">
-            <el-button type="warning" style="width: 30%; height: 100px; font-size: 26px">重拍</el-button>
-            <el-button type="primary" style="width: 30%; height: 100px; font-size: 26px" @click="upload">确定</el-button>
+            <el-button class="button" type="warning">重拍</el-button>
+            <el-button class="button" type="primary" @click="upload">确定
+            </el-button>
           </div>
         </div>
       </el-footer>
     </el-container>
   </div>
 </template>
-
-<style scoped>
-.common-layout {
-  background-color: #EEF1F3; /* 设置整个网页的背景颜色 */
-}
-.header {
-  background: white;
-  width: 100%;
-  height: 29%;
-}
-.header_1 {
-  width: 275px;
-  height: 100%;
-  background: #0066FF;
-  display: flex;
-  justify-content: center; /* 水平居中 */
-  align-items: center; /* 垂直居中 */
-}
-.header_1 div {
-  width: 218px;
-  display: flex; /* 将 .header_1 div 设置为 Flex 容器 */
-  align-items: center; /* 垂直居中 */
-}
-.header_1 div span {
-  font-size: 14px;
-  color: white;
-}
-.header_1 div img {
-  margin-right: 10px; /* 设置图像与文字之间的间距 */
-}
-.header_2 {
-  display: flex; /* 将 .header_2 设置为 Flex 容器 */
-  flex-wrap: wrap; /* 允许换行 */
-  justify-content: center;
-  align-items: center;
-  height: 204px;
-  border-style: solid;
-  border-color: #E4E4E4;
-  border-width: 1px;
-}
-.block {
-  position: relative; /* 将 .block 设置为相对定位的父容器 */
-  width: 13%;
-  height: 124px;
-  border-style: solid;
-  border-color: #E4E4E4;
-  border-width: 1px;
-  margin-right: 90px; /* 设置右边距为90px */
-  //margin-bottom: 90px; /* 设置下边距为90px */
-}
-.first-block {
-  margin-left: 127px; /* 设置第一个块的左边距为127px */
-}
-.block p {
-  margin: 21px 17px;
-  color: #CCCCCC;
-  font-size: 14px;
-}
-.block img{
-  position: absolute; /* 将图片设置为绝对定位 */
-  bottom: 14px; /* 将图片定位到底部 */
-  right: 21px; /* 将图片定位到右边 */
-}
-.main {
-  display: flex; /* 将 .header_2 设置为 Flex 容器 */
-  flex-wrap: wrap; /* 允许换行 */
-  background: white;
-  width: 100%;
-  height: 48%;
-  margin-top: 21px;
-}
-.main p {
-  color: #333333;
-  font-size: 14px;
-}
-.box {
-  display: flex;
-  flex-wrap: wrap; /* 允许换行 */
-  //justify-content: center;
-  width: 14%;
-  height: 380px;
-  border-style: solid;
-  border-color: #E4E4E4;
-  border-width: 1px;
-  margin-top: 45px;
-  margin-right: 60px; /* 设置右边距为90px */
-}
-.box p{
-  font-size: 16px;
-  color: black;
-}
-.first-box {
-  margin-left: 137px;
-}
-.footer {
-  background: white;
-  width: 100%;
-  height: 23%;
-  margin-top: 29px;
-  //display: flex;
-  //justify-content: center;
-  //align-items: center;
-}
-.footer-content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.footer p {
-  color: #333333;
-  font-size: 14px;
-}
-
-.button-group {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  width: 45%;
-}
-.demo-image__error .image-slot {
-  font-size: 30px;
-}
-.demo-image__error .image-slot .el-icon {
-  font-size: 30px;
-}
-.demo-image__error .el-image {
-  width: 100%;
-  height: 200px;
-}
-</style>
 <script>
 import axios from 'axios';
 // import Api from "@/api/api"
 
 export default {
-  data(){
+  data() {
     return {
       loading: false,
       currentDate: '', // 存储当前计算机时间
@@ -350,7 +168,7 @@ export default {
         this.updateInfo()
         setTimeout(() => {
           this.getImg();
-        }, 10*1000);
+        }, 10 * 1000);
         // this.getImg()
         code = ''
         lastCode = ''
@@ -397,26 +215,30 @@ export default {
       that.loading = true
       this.code = code
       try {
-        const headers = {"Token": this.token};
+        const headers = {
+          "Token": this.token
+        };
         const response = await axios.post("http://127.0.0.1:8000/api/resource/add", {
           deviceCode: code,
           Date: this.currentDate,
-        }, {headers});
+        }, {
+          headers
+        });
         console.log(response.data);
       } catch (error) {
         console.error(error);
       }
     },
-    async getInfo(){
+    async getInfo() {
       try {
         const response = await axios.get("http://127.0.0.1:8000/api/member/info", {
-          params:{
+          params: {
             createDate: this.currentDate
           },
-          headers:{
+          headers: {
             "Token": this.token
           }
-        },);
+        }, );
         this.scanNumber = response.data.data.scanNumber;
         this.cameraNumber = response.data.data.cameraNumber;
         // console.log(response.data);
@@ -424,17 +246,17 @@ export default {
         console.log(error)
       }
     },
-    async getImg(){
+    async getImg() {
 
       try {
         const response = await axios.get("http://127.0.0.1:8000/api/member/img", {
-          params:{
+          params: {
             deviceCode: this.code
           },
-          headers:{
+          headers: {
             "Token": this.token
           }
-        },);
+        }, );
         console.log(response.data.data.lists);
         let img = response.data.data.lists
         this.img_top = img.imgTop;
@@ -444,7 +266,7 @@ export default {
         this.img_right = img.imgRight;
         console.log(this.img_top)
         var that = this
-        if (response.data.code == 200){
+        if (response.data.code == 200) {
           that.loading = false
         }
 
@@ -453,25 +275,25 @@ export default {
         console.log(error)
       }
     },
-    async updateInfo(){
+    async updateInfo() {
       try {
         const response = await axios.get("http://127.0.0.1:8000/api/member/update", {
-          params:{
+          params: {
             createDate: this.currentDate
           },
-          headers:{
+          headers: {
             "Token": this.token
           }
-        },);
+        }, );
         console.log(response.data);
         //
       } catch (error) {
         console.log(error)
       }
     },
-    async upload(){
+    async upload() {
       try {
-        const res = await axios.post("http://127.0.0.1:8000/api/pic/add",{
+        const res = await axios.post("http://127.0.0.1:8000/api/pic/add", {
           img_behind_camera_number: 3,
           img_front_camera_number: 2,
           img_left_camera_number: 4,
@@ -483,12 +305,12 @@ export default {
           imgLeft: this.img_left,
           imgRight: this.img_right
         }, {
-          headers:{
+          headers: {
             "Token": this.token
           }
         });
         console.log(res.data)
-      }catch (error){
+      } catch (error) {
         console.log(error)
       }
       this.img_top = [];
@@ -500,23 +322,219 @@ export default {
   },
   computed: {
     selectedImgTop() {
-      return this.img_top[this.selectedTopIndex]+"?t="+Math.random() || ''; // 根据选中的索引获取对应的图片
+      return this.img_top[this.selectedTopIndex] + "?t=" + Math.random() || ''; // 根据选中的索引获取对应的图片
     },
     selectedImgFront() {
-      return this.img_front[this.selectedFrontIndex]+"?t="+Math.random() || ''; // 根据选中的索引获取对应的图片
+      return this.img_front[this.selectedFrontIndex] + "?t=" + Math.random() || ''; // 根据选中的索引获取对应的图片
     },
     selectedImgBehend() {
-      return this.img_behind[this.selectedBehendIndex]+"?t="+Math.random() || ''; // 根据选中的索引获取对应的图片
+      return this.img_behind[this.selectedBehendIndex] + "?t=" + Math.random() || ''; // 根据选中的索引获取对应的图片
     },
     selectedImgLeft() {
-      return this.img_left[this.selectedLeftIndex]+"?t="+Math.random() || ''; // 根据选中的索引获取对应的图片
+      return this.img_left[this.selectedLeftIndex] + "?t=" + Math.random() || ''; // 根据选中的索引获取对应的图片
     },
     selectedImgRight() {
-      return this.img_right[this.selectedRightIndex]+"?t="+Math.random() || ''; // 根据选中的索引获取对应的图片
+      return this.img_right[this.selectedRightIndex] + "?t=" + Math.random() || ''; // 根据选中的索引获取对应的图片
     },
 
   },
 }
-
-
 </script>
+<style scoped>
+.common-layout {
+  background-color: #EEF1F3;
+  /* 设置整个网页的背景颜色 */
+}
+
+.header {
+  background: white;
+  width: 100%;
+  height: 29%;
+}
+
+.header_1 {
+  width: 275px;
+  height: 100%;
+  background: #0066FF;
+  display: flex;
+  justify-content: center;
+  /* 水平居中 */
+  align-items: center;
+  /* 垂直居中 */
+}
+
+.header_1 div {
+  width: 218px;
+  display: flex;
+  /* 将 .header_1 div 设置为 Flex 容器 */
+  align-items: center;
+  /* 垂直居中 */
+}
+
+.header_1 div span {
+  font-size: 14px;
+  color: white;
+}
+
+.header_1 div img {
+  margin-right: 10px;
+  /* 设置图像与文字之间的间距 */
+}
+
+.boxer {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  flex-direction: column;
+  /* padding: 5px; */
+  width: 120px;
+}
+
+.image-boxer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+}
+.image-text {
+  width: 100%;
+  text-align: center;
+  height: 90px;
+  align-content: center;
+}
+.header_2 {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  height: 205px;
+  border-style: solid;
+  border-color: #E4E4E4;
+  border-width: 1px;
+}
+
+.block {
+  position: relative;
+  width: 13%;
+  height: 124px;
+  border-style: solid;
+  border-color: #E4E4E4;
+  border-width: 1px;
+  margin-right: 60px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.first-block {
+  margin-left: 127px;
+  /* 设置第一个块的左边距为127px */
+}
+
+.block p {
+  margin: 21px 17px;
+  color: #CCCCCC;
+  font-size: 14px;
+}
+
+.block img {
+  position: absolute;
+  /* 将图片设置为绝对定位 */
+  bottom: 14px;
+  /* 将图片定位到底部 */
+  right: 21px;
+  /* 将图片定位到右边 */
+  width: 49px;
+  height: 49px;
+}
+
+.main {
+  display: flex;
+  flex-wrap: nowrap;
+  background: white;
+  width: 100%;
+  height: 50%;
+  /* margin-top: 21px; */
+  flex-direction: column;
+}
+
+.main p {
+  color: #333333;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.box {
+  display: flex;
+  flex-wrap: wrap;
+  width: 14%;
+  height: 380px;
+  border-style: solid;
+  border-color: #E4E4E4;
+  border-width: 1px;
+  margin-top: 5px;
+  margin-right: 60px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.box p {
+  font-size: 16px;
+  color: black;
+}
+
+.first-box {
+  margin-left: 80px;
+}
+
+.footer {
+  background: white;
+  width: 100%;
+  height: 23%;
+  //margin-top: 29px;
+  //display: flex;
+  //justify-content: center;
+  //align-items: center;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.footer p {
+  color: #333333;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 95%;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.button{
+  width: 18%;
+  height: 70px;
+  font-size: 24px;
+  text-align: center;
+}
+.demo-image__error .image-slot {
+  font-size: 30px;
+}
+
+.demo-image__error .image-slot .el-icon {
+  font-size: 30px;
+}
+
+.demo-image__error .el-image {
+  width: 100%;
+  height: 200px;
+}
+</style>
