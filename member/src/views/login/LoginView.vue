@@ -37,7 +37,7 @@ export default {
 
     const login = () => {
       loading.value = true;
-      axios.post('http://192.168.31.95:8000/api/member/login', {
+      axios.post('http://127.0.0.1:8000/api/member/login', {
         username: uname.value,
         password: password.value
       })

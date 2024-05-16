@@ -179,16 +179,6 @@ const workbenchData: any = reactive({
             url: '/organization/department'
         },
         {
-            name: '字典管理',
-            image: menu_dict,
-            url: '/dev_tools/dict'
-        },
-        {
-            name: '代码生成器',
-            image: menu_generator,
-            url: '/dev_tools/code'
-        },
-        {
             name: '素材中心',
             image: menu_file,
             url: '/material/index'
@@ -202,6 +192,16 @@ const workbenchData: any = reactive({
             name: '网站信息',
             image: menu_web,
             url: '/setting/website/information'
+        },
+        {
+            name: '员工列表',
+            image: menu_web,
+            url: '/member/member/index'
+        },
+        {
+            name: '溯源列表',
+            image: menu_web,
+            url: '/resource/resource/index'
         }
     ], // 常用功能
     visitor: [], // 访问量

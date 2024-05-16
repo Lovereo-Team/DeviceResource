@@ -134,8 +134,7 @@ export default {
       img_front: [],
       img_behind: [],
       img_left: [],
-      img_right: [],
-      token: '99966b4201c8b51cdb89e741772dc46eE0Gxoq',
+      img_right: []
     };
   },
   mounted() {
@@ -216,7 +215,7 @@ export default {
       this.code = code
       try {
         const headers = {
-          "Token": this.token
+          "Token": localStorage.getItem("token")
         };
         const response = await axios.post("http://127.0.0.1:8000/api/resource/add", {
           deviceCode: code,
@@ -236,7 +235,7 @@ export default {
             createDate: this.currentDate
           },
           headers: {
-            "Token": this.token
+            "Token": localStorage.getItem("token")
           }
         }, );
         this.scanNumber = response.data.data.scanNumber;
@@ -254,7 +253,7 @@ export default {
             deviceCode: this.code
           },
           headers: {
-            "Token": this.token
+            "Token": localStorage.getItem("token")
           }
         }, );
         console.log(response.data.data.lists);
@@ -282,7 +281,7 @@ export default {
             createDate: this.currentDate
           },
           headers: {
-            "Token": this.token
+            "Token": localStorage.getItem("token")
           }
         }, );
         console.log(response.data);
@@ -306,7 +305,7 @@ export default {
           imgRight: this.img_right
         }, {
           headers: {
-            "Token": this.token
+            "Token": localStorage.getItem("token")
           }
         });
         console.log(res.data)

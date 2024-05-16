@@ -4,6 +4,7 @@ import cv2
 import multiprocessing
 import time
 import os
+import uvicorn
 
 import mysql.connector
 from fastapi import FastAPI, Query
@@ -57,8 +58,7 @@ def record_video_stream(url, queue, code, index, duration=3, num_frames_to_captu
 
 def main(code):
     rtsp_urls = [
-        "rtsp://admin:a1234567@192.168.31.68:554/Streaming/Channels/1",
-        "rtsp://admin:a1234567@192.168.31.71:554/Streaming/Channels/1",
+        "rtsp://admin:a1234567@192.168.31.67:554/Streaming/Channels/1"
     ]
 
     frame_queue = multiprocessing.Queue()
@@ -112,4 +112,6 @@ async def capture_cameras(code: str = Query(...)):
         insert_image_path_to_database(image_results[0], image_results[1], [], code)
     return {"status": "success", "data": image_results}
 
-
+if __name__ == '__main__':
+    # 加载预训练的分词器和模型
+    uvicorn.run(app, host='0.0.0.0', port=9090, workers=1)

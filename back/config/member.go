@@ -18,14 +18,14 @@ var MemberConfig = memberConfig{
 
 	// 免权限验证
 	NotAuthUri: []string{
-		"system:logout",         // 退出登录
-		"system:menu:menus",     // 系统菜单
-		"system:menu:route",     // 菜单路由
-		"system:admin:upInfo",   // 管理员更新
-		"system:admin:self",     // 管理员信息
-		"system:role:all",       // 所有角色
-		"system:post:all",       // 所有岗位
-		"system:dept:list",      // 所有部门
+		"member:logout",         // 退出登录
+		"member:menu:menus",     // 系统菜单
+		"member:menu:route",     // 菜单路由
+		"member:admin:upInfo",   // 管理员更新
+		"member:admin:self",     // 管理员信息
+		"member:role:all",       // 所有角色
+		"member:post:all",       // 所有岗位
+		"member:dept:list",      // 所有部门
 		"setting:dict:type:all", // 所有字典类型
 		"setting:dict:data:all", // 所有字典数据
 		"article:cate:all",      // 所有文章分类
@@ -33,8 +33,8 @@ var MemberConfig = memberConfig{
 
 	// 演示模式白名单
 	ShowWhitelistUri: []string{
-		"system:login",  // 登录接口
-		"system:logout", // 退出登录
+		"member:login",  // 登录接口
+		"member:logout", // 退出登录
 	},
 
 	// 请求临时数据

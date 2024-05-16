@@ -25,3 +25,4 @@ back/.idea
 .idea/
 font/.idea
 back/www
+back\__pycache__
