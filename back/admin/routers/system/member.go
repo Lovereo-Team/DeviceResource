@@ -8,7 +8,6 @@ import (
 	"DeviceResource/core/response"
 	"DeviceResource/middleware"
 	"DeviceResource/util"
-	"fmt"
 	"github.com/gin-gonic/gin"
 )
 
@@ -59,7 +58,6 @@ func (hd memberHandler) detail(c *gin.Context) {
 // add member新增
 func (hd memberHandler) add(c *gin.Context) {
 	var addReq req.MemberAddReq
-	fmt.Println("aaa", addReq)
 
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyBody(c, &addReq)) {
 		return

@@ -13,7 +13,6 @@ import (
 	"archive/zip"
 	"bytes"
 	"database/sql"
-	"fmt"
 	"gorm.io/gorm"
 	"strings"
 )
@@ -48,7 +47,6 @@ func (genSrv generateService) DbTables(page request.PageReq, dbReq req.DbTablesR
 	offset := page.PageSize * (page.PageNo - 1)
 	tbModel := generator.GenUtil.GetDbTablesQuery(genSrv.db, dbReq.TableName, dbReq.TableComment, limit, offset)
 	allTbModel := generator.GenUtil.GetDbTablesQueryALL(genSrv.db, dbReq.TableName, dbReq.TableComment)
-	fmt.Println("aaa", tbModel)
 	// 总数
 	var count int64
 	err := allTbModel.Count(&count).Error
@@ -70,7 +68,6 @@ func (genSrv generateService) DbTables(page request.PageReq, dbReq req.DbTablesR
 		var tableName, tableComment string
 		var createTime, updateTime sql.NullTime
 		if err := rows.Scan(&tableName, &tableComment, &createTime, &updateTime); err != nil {
-			fmt.Println("failed to scan row:", err)
 			continue
 		}
 

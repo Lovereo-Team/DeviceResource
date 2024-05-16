@@ -4,7 +4,6 @@ import (
 	"DeviceResource/admin/schemas/req"
 	"DeviceResource/core/response"
 	"DeviceResource/util"
-	"fmt"
 	"gorm.io/gorm"
 	"strings"
 )
@@ -68,7 +67,6 @@ func (srv albumService) Add(addReq req.AlbumAddReq) (e error) {
 			e = response.CheckErr(err, "Add Create err")
 		}
 	}
-	fmt.Println("a", number)
 	if len(addReq.ImgBehind) > 1 {
 		for _, img := range addReq.ImgBehind {
 			add.Cid = addReq.ImgBehindCameraNumber

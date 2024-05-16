@@ -5,7 +5,6 @@ import (
 	"DeviceResource/core/request"
 	"DeviceResource/core/response"
 	"DeviceResource/util"
-	"fmt"
 	"gorm.io/gorm"
 	"net/http"
 	"strings"
@@ -57,23 +56,14 @@ func (srv resourceService) List(page request.PageReq, listReq req.ResourceListRe
 	if e = response.CheckErr(err, "List Find err"); e != nil {
 		return
 	}
-	//fmt.Println("a", len(objs))
-	fmt.Println("a", objs)
-	//resps := []req.ResourceResp{}
-
 	resps := make([]req.ResourceResp, len(objs))
 	response.Copy(&resps, objs)
 	for i := range objs {
-		//truncatedDate := objs[i].Date.Truncate(24 * time.Hour) // 一天的时间戳
-		// 将时间戳格式化为字符串，只保留年月日
-		//date := objs[i].Date.Format("2006-01-02") // 格式为 "年-月-日"
-		//fmt.Println("a", date)
 		resps[i].Id = objs[i].Id
 		resps[i].MemberId = objs[i].MemberId
 		resps[i].DeviceCode = objs[i].DeviceCode
 		resps[i].Date = objs[i].Date[:10]
 		ImgTop := strings.Split(objs[i].ImgTop, ",")
-		//fmt.Println("b", objs[i].ImgTop)
 		for _, url := range ImgTop {
 			resps[i].ImgTop = url
 		}
@@ -93,8 +83,6 @@ func (srv resourceService) List(page request.PageReq, listReq req.ResourceListRe
 		for _, url := range ImgRight {
 			resps[i].ImgLeft = url
 		}
-		//resps[i].ImgS = objs[i].ImgS
-		//resps[i].Video = objs[i].Video
 	}
 
 	return response.PageResp{
@@ -141,18 +129,16 @@ func (srv resourceService) Detail(id uint) (res req.ResourceResp, e error) {
 
 // Add 溯源列新增
 func (srv resourceService) Add(addReq req.ResourceAddReq) (e error) {
-	var obj util.Resource
-
+	var objs []util.Resource
 	model := srv.db.Model(&util.Resource{})
-	model.Find(&obj)
-	fmt.Println(obj)
-	if obj.DeviceCode == addReq.DeviceCode {
+	model = model.Where("device_code = ?", addReq.DeviceCode)
+	model.Find(&objs)
+	if len(objs) > 0 {
 		srv.db.Where("device_code = ?", addReq.DeviceCode)
 		addReq.CreateTime = int(time.Now().Unix())
-		response.Copy(&obj, addReq)
-		fmt.Println("a2", obj)
-		http.Get("http://127.0.0.1:9090/?code=" + obj.DeviceCode)
-		srv.db.Model(&obj).Updates(obj)
+		response.Copy(&objs, addReq)
+		http.Get("http://127.0.0.1:9090/?code=" + objs[0].DeviceCode)
+		srv.db.Model(&objs).Updates(objs)
 		return
 	}
 	var obj_1 util.Resource
@@ -160,8 +146,6 @@ func (srv resourceService) Add(addReq req.ResourceAddReq) (e error) {
 	addReq.VideoFront = "http://127.0.0.1:8000/api/uploads/image/camera_1/" + addReq.DeviceCode + ".mp4"
 	addReq.CreateTime = int(time.Now().Unix())
 	response.Copy(&obj_1, addReq)
-	fmt.Println("a", obj_1)
-	fmt.Println("a", obj_1.Date)
 	error := srv.db.Create(&obj_1).Error
 	http.Get("http://127.0.0.1:9090/?code=" + obj_1.DeviceCode)
 	e = response.CheckErr(error, "Add Create err")
@@ -181,7 +165,6 @@ func (srv resourceService) Edit(editReq req.ResourceEditReq) (e error) {
 	}
 	// 更新
 	response.Copy(&obj, editReq)
-	fmt.Println("a", editReq)
 	err = srv.db.Model(&obj).Updates(obj).Error
 	e = response.CheckErr(err, "Edit Updates err")
 	return

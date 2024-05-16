@@ -7,7 +7,6 @@ import (
 	"DeviceResource/core/response"
 	sysModel "DeviceResource/model/system"
 	"DeviceResource/util"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"strconv"
 	"strings"
@@ -27,7 +26,6 @@ func TokenAuth() gin.HandlerFunc {
 
 		// 免登录接口
 		if util.ToolsUtil.Contains(config.AdminConfig.NotLoginUri, auths) {
-			fmt.Println("a")
 			c.Next()
 			return
 		}
