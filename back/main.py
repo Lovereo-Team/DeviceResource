@@ -1,5 +1,5 @@
 from datetime import datetime
-
+import uvicorn
 import cv2
 import multiprocessing
 import time
@@ -113,5 +113,5 @@ async def capture_cameras(code: str = Query(...)):
     return {"status": "success", "data": image_results}
 
 if __name__ == "__main__":
-    import uvicorn
+
     uvicorn.run(app, host="0.0.0.0", port=9090)
