@@ -1,18 +1,18 @@
 <template>
     <div class="index-lists">
         <el-card class="!border-none" shadow="never">
-            <el-form ref="formRef" class="mb-[-16px]" :model="queryParams" :inline="true">
+            <el-form ref="formRef" :inline="true" :model="queryParams" class="mb-[-16px]">
                 <el-form-item label="员工编号" prop="member_id">
-                    <el-input class="w-[280px]" v-model="queryParams.member_id" />
+                    <el-input v-model="queryParams.member_id" class="w-[280px]" />
                 </el-form-item>
                 <el-form-item label="设备编号" prop="device_code">
-                    <el-input class="w-[280px]" v-model="queryParams.device_code" />
+                    <el-input v-model="queryParams.device_code" class="w-[280px]" />
                 </el-form-item>
                 <el-form-item label="扫码日期" prop="date">
                     <el-date-picker
                         v-model="queryParams.date"
-                        type="date"
-                        placeholder="选择日期">
+                        placeholder="选择日期"
+                        type="date">
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item>
@@ -31,138 +31,147 @@
                 </el-button>
             </div>
             <el-table
-                class="mt-4"
-                size="large"
                 v-loading="pager.loading"
                 :data="pager.lists"
+                class="mt-4"
+                size="large"
             >
-                <el-table-column label="员工编号" prop="memberId" min-width="60" />
-                <el-table-column label="设备编号" prop="deviceCode" min-width="100" />
-                <el-table-column label="扫码日期" prop="date" min-width="100" />
-                <el-table-column label="图片_上" prop="imgTop" min-width="100" >
-                    <template #default="scope">
-                        <el-image
-                            style="width: 40px; height: 40px"
-                            :src="scope.row.imgTop"
-                            :preview-src-list="[scope.row.imgTop]"
-                            :hide-on-click-modal="true"
-                            :preview-teleported="true"
-                            fit="cover"
-                        >
-                            <template #error>
-                                <div class="h-full flex justify-center items-center iconStyle">
-                                    <el-icon :size="30"><Warning /></el-icon>
-                                </div>
-                            </template>
-                        </el-image>
-                        <el-button
-                            v-perms="['resource:video']"
-                            type="primary"
-                            link
-                            @click="handleVideo(scope.row.VideoTop)"
-                        >
-                            视频
-                        </el-button>
+                <el-table-column label="员工编号" min-width="60" prop="memberId" />
+                <el-table-column label="设备编号" min-width="100" prop="deviceCode" />
+                <el-table-column label="扫码日期" min-width="100" prop="date" />
+                <el-table-column label="图片_上" min-width="100" prop="imgTop" >
+                    <template #default="scope" >
+                        <view class="box">
+                            <el-image
+                                :hide-on-click-modal="true"
+                                :preview-src-list="[scope.row.imgTop]"
+                                :preview-teleported="true"
+                                :src="scope.row.imgTop"
+                                fit="cover"
+                                style="width: 40px; height: 40px"
+                            >
+                                <template #error>
+                                    <div class="h-full flex justify-center items-center iconStyle">
+                                        <el-icon :size="30"><Warning /></el-icon>
+                                    </div>
+                                </template>
+                            </el-image>
+                            <el-button
+                                v-perms="['resource:video']"
+                                link
+                                type="primary"
+                                @click="handleVideo(scope.row.VideoTop)"
+                            >
+                                视频
+                            </el-button>
+                        </view>
                     </template>
                 </el-table-column>
-                <el-table-column label="图片_前" prop="imgFront" min-width="100" >
+                <el-table-column label="图片_前" min-width="100" prop="imgFront" >
                     <template #default="scope">
-                        <el-image
-                            style="width: 40px; height: 40px"
-                            :src="scope.row.imgFront"
-                            :preview-src-list="[scope.row.imgFront]"
-                            :hide-on-click-modal="true"
-                            :preview-teleported="true"
-                            fit="cover"
-                        >
-                            <template #error>
-                                <div class="h-full flex justify-center items-center iconStyle">
-                                    <el-icon :size="30"><Warning /></el-icon>
-                                </div>
-                            </template>
-                        </el-image>
-                        <el-button
-                            v-perms="['resource:video']"
-                            type="primary"
-                            link
-                            @click="handleVideo(scope.row.VideoFront)"
-                        >
-                            视频
-                        </el-button>
+                        <view class="box">
+                            <el-image
+                                :hide-on-click-modal="true"
+                                :preview-src-list="[scope.row.imgFront]"
+                                :preview-teleported="true"
+                                :src="scope.row.imgFront"
+                                fit="cover"
+                                style="width: 40px; height: 40px"
+                            >
+                                <template #error>
+                                    <div class="h-full flex justify-center items-center iconStyle">
+                                        <el-icon :size="30"><Warning /></el-icon>
+                                    </div>
+                                </template>
+                            </el-image>
+                            <el-button
+                                v-perms="['resource:video']"
+                                link
+                                type="primary"
+                                @click="handleVideo(scope.row.VideoFront)"
+                            >
+                                视频
+                            </el-button>
+                        </view>
                     </template>
                 </el-table-column>
-                <el-table-column label="图片_后" prop="imgBehind" min-width="100" >
+                <el-table-column label="图片_后" min-width="100" prop="imgBehind" >
                     <template #default="scope">
-                        <el-image
-                            style="width: 40px; height: 40px"
-                            :src="scope.row.imgBehind"
-                            :preview-src-list="[scope.row.imgBehind]"
-                            :hide-on-click-modal="true"
-                            :preview-teleported="true"
-                            fit="cover"
-                        >
-                            <template #error>
-                                <div class="h-full flex justify-center items-center iconStyle">
-                                    <el-icon :size="30"><Warning /></el-icon>
-                                </div>
-                            </template>
-                        </el-image>
+                        <view class="box">
+                            <el-image
+                                :hide-on-click-modal="true"
+                                :preview-src-list="[scope.row.imgBehind]"
+                                :preview-teleported="true"
+                                :src="scope.row.imgBehind"
+                                fit="cover"
+                                style="width: 40px; height: 40px"
+                            >
+                                <template #error>
+                                    <div class="h-full flex justify-center items-center iconStyle">
+                                        <el-icon :size="30"><Warning /></el-icon>
+                                    </div>
+                                </template>
+                            </el-image>
+                        </view>
                     </template>
                 </el-table-column>
-                <el-table-column label="图片_左" prop="imgLeft" min-width="100" >
+                <el-table-column label="图片_左" min-width="100" prop="imgLeft" >
                     <template #default="scope">
-                        <el-image
-                            style="width: 40px; height: 40px"
-                            :src="scope.row.imgLeft"
-                            :preview-src-list="[scope.row.imgLeft]"
-                            :hide-on-click-modal="true"
-                            :preview-teleported="true"
-                            fit="cover"
-                        >
-                            <template #error>
-                                <div class="h-full flex justify-center items-center iconStyle">
-                                    <el-icon :size="30"><Warning /></el-icon>
-                                </div>
-                            </template>
-                        </el-image>
+                        <view class="box">
+                            <el-image
+                                :hide-on-click-modal="true"
+                                :preview-src-list="[scope.row.imgLeft]"
+                                :preview-teleported="true"
+                                :src="scope.row.imgLeft"
+                                fit="cover"
+                                style="width: 40px; height: 40px"
+                            >
+                                <template #error>
+                                    <div class="h-full flex justify-center items-center iconStyle">
+                                        <el-icon :size="30"><Warning /></el-icon>
+                                    </div>
+                                </template>
+                            </el-image>
+                        </view>
                     </template>
                 </el-table-column>
-                <el-table-column label="图片_右" prop="imgRight" min-width="100" >
+                <el-table-column label="图片_右" min-width="100" prop="imgRight" >
                     <template #default="scope">
-                        <el-image
-                            style="width: 40px; height: 40px"
-                            :src="scope.row.imgRight"
-                            :preview-src-list="[scope.row.imgRight]"
-                            :hide-on-click-modal="true"
-                            :preview-teleported="true"
-                            fit="cover"
-                        >
-                            <template #error>
-                                <div class="h-full flex justify-center items-center iconStyle">
-                                    <el-icon :size="30"><Warning /></el-icon>
-                                </div>
-                            </template>
-                        </el-image>
-
+                        <view class="box">
+                            <el-image
+                                :hide-on-click-modal="true"
+                                :preview-src-list="[scope.row.imgRight]"
+                                :preview-teleported="true"
+                                :src="scope.row.imgRight"
+                                fit="cover"
+                                style="width: 40px; height: 40px"
+                            >
+                                <template #error>
+                                    <div class="h-full flex justify-center items-center iconStyle">
+                                        <el-icon :size="30"><Warning /></el-icon>
+                                    </div>
+                                </template>
+                            </el-image>
+                        </view>
                     </template>
                 </el-table-column>
 <!--                <el-table-column label="图片集合" prop="imgS" min-width="100" />-->
 <!--                <el-table-column label="视频" prop="video" min-width="100" />-->
-                <el-table-column label="创建时间" prop="createTime" min-width="150" />
-                <el-table-column label="操作" width="120" fixed="right">
+                <el-table-column label="创建时间" min-width="150" prop="createTime" />
+                <el-table-column fixed="right" label="操作" width="120">
                     <template #default="{ row }">
                         <el-button
                             v-perms="['resource:edit']"
-                            type="primary"
                             link
+                            type="primary"
                             @click="handleEdit(row)"
                         >
                             编辑
                         </el-button>
                         <el-button
                             v-perms="['resource:del']"
-                            type="danger"
                             link
+                            type="danger"
                             @click="handleDelete(row.id)"
                         >
                             删除
@@ -177,18 +186,18 @@
         <edit-popup
             v-if="showEdit"
             ref="editRef"
-            @success="getLists"
             @close="showEdit = false"
+            @success="getLists"
         />
         <video-group
             v-if="showVideo"
             ref="videoRef"
-            @success="getLists"
             @close="showVideo = false"
+            @success="getLists"
         />
     </div>
 </template>
-<script lang="ts" setup name="resource">
+<script lang="ts" name="resource" setup>
 import { resourceDelete, resourceLists } from '@/api/resource'
 import { usePaging } from '@/hooks/usePaging'
 import feedback from '@/utils/feedback'
@@ -251,3 +260,13 @@ const handleDelete = async (id: number) => {
 
 getLists()
 </script>
+<style scoped>
+.box{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    height: 70px;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+}
+</style>
