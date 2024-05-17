@@ -144,6 +144,7 @@ func (srv resourceService) Add(addReq req.ResourceAddReq) (e error) {
 	var obj_1 util.Resource
 	addReq.VideoTop = "http://127.0.0.1:8000/api/uploads/image/camera_0/" + addReq.DeviceCode + ".mp4"
 	addReq.VideoFront = "http://127.0.0.1:8000/api/uploads/image/camera_1/" + addReq.DeviceCode + ".mp4"
+	addReq.VideoFront = "http://127.0.0.1:8000/api/uploads/image/camera_2/" + addReq.DeviceCode + ".mp4"
 	addReq.CreateTime = int(time.Now().Unix())
 	response.Copy(&obj_1, addReq)
 	error := srv.db.Create(&obj_1).Error
