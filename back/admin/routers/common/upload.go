@@ -8,9 +8,7 @@ import (
 	"DeviceResource/core/response"
 	"DeviceResource/middleware"
 	"DeviceResource/util"
-	"fmt"
 	"github.com/gin-gonic/gin"
-	"path"
 )
 
 var UploadGroup = core.Group("/common", newUploadHandler, regUpload, middleware.TokenAuth())
@@ -23,7 +21,6 @@ func regUpload(rg *gin.RouterGroup, group *core.GroupBase) error {
 	return group.Reg(func(handle *uploadHandler) {
 		rg.POST("/upload/image", middleware.RecordLog("上传图片", middleware.RequestFile), handle.uploadImage)
 		rg.POST("/upload/video", middleware.RecordLog("上传视频", middleware.RequestFile), handle.uploadVideo)
-		rg.GET("/uploads/image/:name", middleware.RecordLog("视频播放", middleware.RequestFile), handle.DowFile)
 	})
 }
 
@@ -57,14 +54,4 @@ func (uh uploadHandler) uploadVideo(c *gin.Context) {
 	}
 	res, err := uh.srv.UploadVideo(file, uReq.Cid, config.AdminConfig.GetAdminId(c))
 	response.CheckAndRespWithData(c, res, err)
-}
-
-func (uh uploadHandler) DowFile(c *gin.Context) {
-	name := c.Param("name")
-	fmt.Println("name", name)
-	//拼接路径,如果没有这一步，则默认在当前路径下寻找
-	filename := path.Join("www/wwwroot/likeadmin_go/public/uploads/image/", name)
-	//响应一个文件
-	c.File(filename)
-	return
 }
